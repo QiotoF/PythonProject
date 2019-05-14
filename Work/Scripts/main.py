@@ -11,7 +11,8 @@ sys.path.append('../Library/')
 import pandas as pd
 import tkinter as tk
 import tkinter.ttk as ttk
-import databin
+from tkinter import IntVar
+#import databin
 
 #dataframe = databin.read_from_binary('../Data/data')
 df1 = pd.read_csv('../Data/bd1.csv')
@@ -54,7 +55,7 @@ def change_database(*args):
     
 selected_database = IntVar(window)
 selected_database.set(OPTIONS[0])
-options_menu = OptionMenu(window, selected_database, *OPTIONS)
+options_menu = ttk.OptionMenu(window, selected_database, *OPTIONS)
 options_menu.pack()
 selected_database.trace('w', change_database)
 
