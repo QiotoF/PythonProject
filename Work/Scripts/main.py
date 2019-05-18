@@ -26,13 +26,7 @@ df4.index=(x for x in df4['Название'])
 df5 = pd.read_csv('../Data/bd5.csv')
 df5.index=(x for x in df5['Название'])
 
-OPTIONS = [
-1,
-2,
-3,
-4,
-5
-] 
+OPTIONS = [1, 2, 3, 4, 5] 
 
 dataframes = [df1, df2, df3, df4, df5]
 
@@ -46,6 +40,15 @@ for x in df1.columns:
 for index, row in df1.iterrows():
     tree.insert("", "end", index, values=list(row))
 tree.pack()
+
+def open_new_window():
+    window_new = tk.Toplevel(window)
+    
+    
+btn_new = tk.Button(window, text='New', command=open_new_window)
+btn_new.pack()
+
+
 
 def change_database(*args):
     global tree
