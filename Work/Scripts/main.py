@@ -14,28 +14,28 @@ import tkinter as tk
 import tkinter.ttk as ttk
 from tkinter import IntVar
 
-
 # import databin
+
+df1 = pd.read_csv('../Data/bd1.csv')
+df1.index = ([(x, y) for x, y in zip(df1['Название'], df1['Конфигурация памяти'])])
+df2 = pd.read_csv('../Data/bd2.csv')
+df2.index = (x for x in df2['Название'])
+df3 = pd.read_csv('../Data/bd3.csv')
+df3.index = (x for x in df3['Название'])
+df4 = pd.read_csv('../Data/bd4.csv')
+df4.index = (x for x in df4['Название'])
+df5 = pd.read_csv('../Data/bd5.csv')
+df5.index = (x for x in df5['Название'])
+
+data_frames = [df1, df2, df3, df4, df5]
+
 
 class MainWindow:
     def __init__(self, master):
 
         self.OPTIONS = [0, 1, 2, 3, 4, 5]
 
-        self.df1 = pd.read_csv('../Data/bd1.csv')
-        self.df1.index = ([(x, y) for x, y in zip(self.df1['Название'], self.df1['Конфигурация памяти'])])
-        self.df2 = pd.read_csv('../Data/bd2.csv')
-        self.df2.index = (x for x in self.df2['Название'])
-        self.df3 = pd.read_csv('../Data/bd3.csv')
-        self.df3.index = (x for x in self.df3['Название'])
-        self.df4 = pd.read_csv('../Data/bd4.csv')
-        self.df4.index = (x for x in self.df4['Название'])
-        self.df5 = pd.read_csv('../Data/bd5.csv')
-        self.df5.index = (x for x in self.df5['Название'])
-
-        self.data_frames = [self.df1, self.df2, self.df3, self.df4, self.df5]
-
-        self.df = self.df1
+        self.df = df1
 
         self.master = master
         self.frame = tk.Frame(self.master)
@@ -54,8 +54,8 @@ class MainWindow:
         self.frame.pack()
 
     def insert_new_entry(self, entry):
-        self.df1.index = pd.MultiIndex.from_tuples(self.df1.index)
-        self.df1.loc[
+        df1.index = pd.MultiIndex.from_tuples(df1.index)
+        df1.loc[
             (entry['Название'], entry['Конфигурация памяти']), ['Название', 'Дата выхода', 'Конфигурация памяти',
                                                                 'Энергопотребление, Вт',
                                                                 'Far Cry 5, FPS',
@@ -66,10 +66,10 @@ class MainWindow:
             entry['Far Cry 5, FPS'], entry['Fallout 4, FPS'],
             entry['The Witcher 3, FPS'], entry['3DMark Cloud Gate'],
             entry['3DMark Fire Strike'], entry['Средняя цена, ₽'])
-        self.df2.loc[entry['Название'], ['Название', 'Архитектура']] = (entry['Название'], entry['Архитектура'])
-        self.df3.loc[entry['Название'], ['Название', 'NVIDIA SLI']] = (entry['Название'], entry['NVIDIA SLI'])
-        self.df4.loc[entry['Название'], ['Название', 'RTX']] = (entry['Название'], entry['RTX'])
-        self.df5.loc[entry['Название'], ['Название', 'Базовая тактовая частота, МГц']] = (
+        df2.loc[entry['Название'], ['Название', 'Архитектура']] = (entry['Название'], entry['Архитектура'])
+        df3.loc[entry['Название'], ['Название', 'NVIDIA SLI']] = (entry['Название'], entry['NVIDIA SLI'])
+        df4.loc[entry['Название'], ['Название', 'RTX']] = (entry['Название'], entry['RTX'])
+        df5.loc[entry['Название'], ['Название', 'Базовая тактовая частота, МГц']] = (
             entry['Название'], entry['Базовая тактовая частота, МГц'])
         self.update_table()
 
@@ -79,7 +79,7 @@ class MainWindow:
 
     def change_database(self, *args):
         self.tree.destroy()
-        self.df = self.data_frames[self.selected_database.get() - 1]
+        self.df = data_frames[self.selected_database.get() - 1]
         self.tree = self.new_tree(self.df)
         self.tree.pack()
 
@@ -176,70 +176,7 @@ class NewWindow:
         entry = dict(zip([x for x in keys], [y for y in values]))
         self.main_window.insert_new_entry(entry)
         self.master.destroy()
-        # self.main_window.df.index = pd.MultiIndex.from_tuples(self.main_window.df.index)
-        # self.main_window.df.loc[
-        #     (values[0], values[2]), ['Название', 'Дата выхода', 'Конфигурация памяти', 'Энергопотребление, Вт', 'Far Cry 5, FPS',
-        #                    'Fallout 4, FPS', 'The Witcher 3, FPS', '3DMark Cloud Gate', '3DMark Fire Strike',
-        #                    'Средняя цена, ₽']] = (values[0], values[1], values[2], values[3], values[4], values[5], values[6], values[7],
-        #                                           values[8], values[9])
-        # self.main_window.update_table()
 
-
-# dataframe = databin.read_from_binary('../Data/data')
-
-
-# def change_database(*args):
-#    global tree
-#    tree.destroy()
-#    tree = new_tree(dataframes[selected_database.get() - 1])
-#    tree.pack()
-
-# def new_entry(name):
-#     print(name)
-
-
-# window_new = tk.Tk()
-# tk.Label(window_new, text='Новая запись в базе данных').grid(row=0, columnspan=2)
-# tk.Label(window_new, text='Имя:').grid(row=1, column=0)
-# entry_name = tk.Entry(window_new).grid(row=1, column=1)
-# tk.Label(window_new, text='Дата выхода:').grid(row=2, column=0)
-# entry_date = tk.Entry(window_new).grid(row=2, column=1)
-# tk.Label(window_new, text='Конфигурация памяти:').grid(row=3, column=0)
-# entry_memory = tk.Entry(window_new).grid(row=3, column=1)
-# tk.Button(window_new, text='Добавить', command=new_entry).grid(row=4, columnspan=2)
-
-# def open_new_window():
-#     window_new.mainloop()
-
-
-# window = tk.Tk()
-#
-# btn_new = tk.Button(window, text='New', command=open_new_window).pack()
-#
-# selected_database = IntVar(window)
-# selected_database.set(OPTIONS[0])
-# options_menu = ttk.OptionMenu(window, selected_database, *OPTIONS)
-# options_menu.pack()
-# selected_database.trace('w', change_database)
-
-# tree = ttk.Treeview(window, columns=tuple(df1.columns), show='headings')
-# for x in df1.columns:
-#    tree.heading(x, text=x)
-# for index, row in df1.iterrows():
-#    tree.insert("", "end", index, values=list(row))
-# tree.pack()
-
-#
-# def new_tree(df):
-#     tree = ttk.Treeview(window, columns=tuple(df.columns), show='headings')
-#     for x in df.columns:
-#         tree.heading(x, text=x)
-#     for index, row in df.iterrows():
-#         tree.insert("", "end", index, values=list(row))
-#     return tree
-
-
-# window.mainloop()
 
 def main():
     root = tk.Tk()
