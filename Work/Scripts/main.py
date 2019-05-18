@@ -66,6 +66,11 @@ class MainWindow:
             entry['Far Cry 5, FPS'], entry['Fallout 4, FPS'],
             entry['The Witcher 3, FPS'], entry['3DMark Cloud Gate'],
             entry['3DMark Fire Strike'], entry['Средняя цена, ₽'])
+        self.df2.loc[entry['Название'], ['Название', 'Архитектура']] = (entry['Название'], entry['Архитектура'])
+        self.df3.loc[entry['Название'], ['Название', 'NVIDIA SLI']] = (entry['Название'], entry['NVIDIA SLI'])
+        self.df4.loc[entry['Название'], ['Название', 'RTX']] = (entry['Название'], entry['RTX'])
+        self.df5.loc[entry['Название'], ['Название', 'Базовая тактовая частота, МГц']] = (
+            entry['Название'], entry['Базовая тактовая частота, МГц'])
         self.update_table()
 
     def open_new_window(self):
@@ -111,6 +116,10 @@ class NewWindow:
         tk.Label(self.frame, text='3DMark Cloud Gate').grid(row=8, column=0)
         tk.Label(self.frame, text='3DMark Fire Strike').grid(row=9, column=0)
         tk.Label(self.frame, text='Средняя цена, руб.').grid(row=10, column=0)
+        tk.Label(self.frame, text='Архитектура').grid(row=11, column=0)
+        tk.Label(self.frame, text='NVIDIA SLI').grid(row=12, column=0)
+        tk.Label(self.frame, text='RTX').grid(row=13, column=0)
+        tk.Label(self.frame, text='Базовая тактовая частота, МГц').grid(row=14, column=0)
 
         self.entry_name = tk.Entry(self.frame)
         self.entry_name.grid(row=1, column=1)
@@ -132,14 +141,22 @@ class NewWindow:
         self.entry_firestrike.grid(row=9, column=1)
         self.entry_price = tk.Entry(self.frame)
         self.entry_price.grid(row=10, column=1)
+        self.entry_arch = tk.Entry(self.frame)
+        self.entry_arch.grid(row=11, column=1)
+        self.entry_sli = tk.Entry(self.frame)
+        self.entry_sli.grid(row=12, column=1)
+        self.entry_rtx = tk.Entry(self.frame)
+        self.entry_rtx.grid(row=13, column=1)
+        self.entry_freq = tk.Entry(self.frame)
+        self.entry_freq.grid(row=14, column=1)
 
-        tk.Button(self.frame, text='Добавить', command=self.new_entry).grid(row=11, columnspan=2)
+        tk.Button(self.frame, text='Добавить', command=self.new_entry).grid(row=15, columnspan=2)
         self.frame.pack()
 
     def new_entry(self):
         keys = ['Название', 'Дата выхода', 'Конфигурация памяти', 'Энергопотребление, Вт', 'Far Cry 5, FPS',
                 'Fallout 4, FPS', 'The Witcher 3, FPS', '3DMark Cloud Gate', '3DMark Fire Strike',
-                'Средняя цена, ₽']
+                'Средняя цена, ₽', 'Архитектура', 'NVIDIA SLI', 'RTX', 'Базовая тактовая частота, МГц']
         values = [
             self.entry_name.get(),
             self.entry_date.get(),
@@ -150,7 +167,11 @@ class NewWindow:
             self.entry_thewitcher3.get(),
             self.entry_cloudgate.get(),
             self.entry_firestrike.get(),
-            self.entry_price.get()
+            self.entry_price.get(),
+            self.entry_arch.get(),
+            self.entry_sli.get(),
+            self.entry_rtx.get(),
+            self.entry_freq.get()
         ]
         entry = dict(zip([x for x in keys], [y for y in values]))
         self.main_window.insert_new_entry(entry)
