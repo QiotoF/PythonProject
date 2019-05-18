@@ -55,22 +55,11 @@ class MainWindow:
 
     def insert_new_entry(self, entry):
         df1.index = pd.MultiIndex.from_tuples(df1.index)
-        df1.loc[
-            (entry['Название'], entry['Конфигурация памяти']), ['Название', 'Дата выхода', 'Конфигурация памяти',
-                                                                'Энергопотребление, Вт',
-                                                                'Far Cry 5, FPS',
-                                                                'Fallout 4, FPS', 'The Witcher 3, FPS',
-                                                                '3DMark Cloud Gate', '3DMark Fire Strike',
-                                                                'Средняя цена, ₽']] = (
-            entry['Название'], entry['Дата выхода'], entry['Конфигурация памяти'], entry['Энергопотребление, Вт'],
-            entry['Far Cry 5, FPS'], entry['Fallout 4, FPS'],
-            entry['The Witcher 3, FPS'], entry['3DMark Cloud Gate'],
-            entry['3DMark Fire Strike'], entry['Средняя цена, ₽'])
-        df2.loc[entry['Название'], ['Название', 'Архитектура']] = (entry['Название'], entry['Архитектура'])
-        df3.loc[entry['Название'], ['Название', 'NVIDIA SLI']] = (entry['Название'], entry['NVIDIA SLI'])
-        df4.loc[entry['Название'], ['Название', 'RTX']] = (entry['Название'], entry['RTX'])
-        df5.loc[entry['Название'], ['Название', 'Базовая тактовая частота, МГц']] = (
-            entry['Название'], entry['Базовая тактовая частота, МГц'])
+        df1.loc[(entry['Название'], entry['Конфигурация памяти']), list(df1.columns)] = [entry[x] for x in df1.columns]
+        df2.loc[entry['Название'], list(df2.columns)] = (entry['Название'], entry['Архитектура'])
+        df3.loc[entry['Название'], list(df3.columns)] = (entry['Название'], entry['NVIDIA SLI'])
+        df4.loc[entry['Название'], list(df4.columns)] = (entry['Название'], entry['RTX'])
+        df5.loc[entry['Название'], list(df5.columns)] = (entry['Название'], entry['Базовая тактовая частота, МГц'])
         self.update_table()
 
     def open_new_window(self):
