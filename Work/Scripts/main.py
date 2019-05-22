@@ -27,24 +27,30 @@ df4.index = (x for x in df4['Название'])
 df5 = pd.read_csv('../Data/bd5.csv')
 df5.index = (x for x in df5['Название'])
 
-data_frames = [df1, df2, df3, df4, df5]
+# frames = [df1, df2, df3, df4, df5]
+frames = dict()
+frames[1] = df1
+frames[2] = df2
+frames[3] = df3
+frames[4] = df4
+frames[5] = df5
 
 
 class MainWindow:
     def __init__(self, master):
 
-        self.OPTIONS = [0, 1, 2, 3, 4, 5]
-
-        self.df = df1
+        self.df = frames[1]
 
         self.master = master
         self.frame = tk.Frame(self.master)
-        self.btn_new = tk.Button(self.frame, text='New', command=self.open_new_window)
+        self.btn_new = tk.Button(self.frame, text='New', command=self.new_onclick)
         self.btn_new.pack()
+        self.btn_delete = tk.Button(self.frame, text='Delete', command=self.delete_entries)
+        self.btn_delete.pack()
 
         self.selected_database = IntVar(self.frame)
-        self.selected_database.set(self.OPTIONS[1])
-        self.options_menu = ttk.OptionMenu(self.frame, self.selected_database, *self.OPTIONS)
+        self.selected_database.set(1)
+        self.options_menu = ttk.OptionMenu(self.frame, self.selected_database, *[0, 1, 2, 3, 4, 5])
         self.options_menu.pack()
         self.selected_database.trace('w', self.change_database)
 
@@ -53,22 +59,48 @@ class MainWindow:
         self.tree.pack()
         self.frame.pack()
 
-    def insert_new_entry(self, entry):
-        df1.index = pd.MultiIndex.from_tuples(df1.index)
-        df1.loc[(entry['Название'], entry['Конфигурация памяти']), list(df1.columns)] = [entry[x] for x in df1.columns]
-        df2.loc[entry['Название'], list(df2.columns)] = (entry['Название'], entry['Архитектура'])
-        df3.loc[entry['Название'], list(df3.columns)] = (entry['Название'], entry['NVIDIA SLI'])
-        df4.loc[entry['Название'], list(df4.columns)] = (entry['Название'], entry['RTX'])
-        df5.loc[entry['Название'], list(df5.columns)] = (entry['Название'], entry['Базовая тактовая частота, МГц'])
+    def delete_entries(self):
+        def key_help(x):
+            x1 = x.split('}')
+            k1 = x1[0][1:]
+            x2 = x.split('{')
+            k2 = x2[2][:len(x2[2]) - 1]
+            print(k1, k2)
+            return k1, k2
+
+        # global df1
+        entries = self.tree.selection()
+        if self.selected_database.get() == 1:
+            for x in entries:
+                # x1 = x.split('}')
+                # k1 = x1[0][1:]
+                # x2 = x.split('{')
+                # k2 = x2[2][:len(x2[2]) - 1]
+                # print(k1, k2)
+                frames[self.selected_database.get()] = frames[self.selected_database.get()].drop(key_help(x))
+        else:
+            for key in entries:
+                frames[self.selected_database.get()] = frames[self.selected_database.get()].drop(key)
         self.update_table()
 
-    def open_new_window(self):
+    def insert_new_entry(self, entry):
+        frames[1].index = pd.MultiIndex.from_tuples(frames[1].index)
+        frames[1].loc[(entry['Название'], entry['Конфигурация памяти']), list(frames[1].columns)] = [entry[x] for x in
+                                                                                                     frames[1].columns]
+        frames[2].loc[entry['Название'], list(frames[2].columns)] = (entry['Название'], entry['Архитектура'])
+        frames[3].loc[entry['Название'], list(frames[3].columns)] = (entry['Название'], entry['NVIDIA SLI'])
+        frames[4].loc[entry['Название'], list(frames[4].columns)] = (entry['Название'], entry['RTX'])
+        frames[5].loc[entry['Название'], list(frames[5].columns)] = (
+            entry['Название'], entry['Базовая тактовая частота, МГц'])
+        self.update_table()
+
+    def new_onclick(self):
         self.window_new = tk.Toplevel(self.master)
         self.new_window = NewWindow(self.window_new, self)
 
     def change_database(self, *args):
         self.tree.destroy()
-        self.df = data_frames[self.selected_database.get() - 1]
+        self.df = frames[self.selected_database.get()]
         self.tree = self.new_tree(self.df)
         self.tree.pack()
 
@@ -81,6 +113,7 @@ class MainWindow:
         return tree
 
     def update_table(self):
+        self.df = frames[self.selected_database.get()]
         self.tree.delete(*self.tree.get_children())
         for x in self.df.columns:
             self.tree.heading(x, text=x)
