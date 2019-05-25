@@ -42,8 +42,28 @@ def open_edit_window():
             entry = dict(zip([x for x in keys], [y for y in values]))
             df.loc[(entry['Название'], int(entry['Конфигурация памяти, ГБ'])), list(df.columns)] = [entry[x] for x in
                                                                                                     df.columns]
-        # elif selected_database.get() == 2:
-
+        elif selected_database.get() == 2:
+            values = [entry_name.get(), entry_arch.get()]
+            for index in df.index:
+                if df.loc[index]['Название'] == key:
+                    df.loc[index, 'Архитектура'] = values[1]
+        elif selected_database.get() == 3:
+            values = [entry_name.get(), entry_sli.get()]
+            for index in df.index:
+                if df.loc[index]['Название'] == key:
+                    df.loc[index, 'NVIDIA SLI'] = values[1]
+        elif selected_database.get() == 4:
+            # keys = ['Название', 'Архитектура']
+            values = [entry_name.get(), entry_rtx.get()]
+            for index in df.index:
+                if df.loc[index]['Название'] == key:
+                    df.loc[index, 'RTX'] = values[1]
+        elif selected_database.get() == 5:
+            # keys = ['Название', 'Архитектура']
+            values = [entry_name.get(), entry_freq.get()]
+            for index in df.index:
+                if df.loc[index]['Название'] == key:
+                    df.loc[index, 'Базовая тактовая частота, МГц'] = values[1]
 
         change_database()
         window_edit.destroy()
@@ -142,16 +162,37 @@ def open_edit_window():
             entry_arch = tk.Entry(window_edit)
             entry_arch.insert(0, arch)
             entry_arch.grid(row=2, column=1)
-        else:
+            tk.Button(window_edit, text='Ok', command=edit_entry).grid(row=3, columnspan=2)
+        elif selected_database.get() == 3:
+            tk.Label(window_edit, text='Имя:').grid(row=1, column=0)
+            tk.Label(window_edit, text='NVIDIA SLI').grid(row=2, column=0)
+            entry_name = tk.Entry(window_edit)
+            entry_name.insert(0, name)
+            entry_name.grid(row=1, column=1)
             entry_sli = tk.Entry(window_edit)
             entry_sli.insert(0, sli)
-            entry_sli.grid(row=3, column=1)
+            entry_sli.grid(row=2, column=1)
+            tk.Button(window_edit, text='Ok', command=edit_entry).grid(row=3, columnspan=2)
+        elif selected_database.get() == 4:
+            tk.Label(window_edit, text='Имя:').grid(row=1, column=0)
+            tk.Label(window_edit, text='RTX').grid(row=2, column=0)
+            entry_name = tk.Entry(window_edit)
+            entry_name.insert(0, name)
+            entry_name.grid(row=1, column=1)
             entry_rtx = tk.Entry(window_edit)
             entry_rtx.insert(0, rtx)
-            entry_rtx.grid(row=4, column=1)
+            entry_rtx.grid(row=2, column=1)
+            tk.Button(window_edit, text='Ok', command=edit_entry).grid(row=3, columnspan=2)
+        elif selected_database.get() == 5:
+            tk.Label(window_edit, text='Имя:').grid(row=1, column=0)
+            tk.Label(window_edit, text='Базовая тактовая частота, МГц').grid(row=2, column=0)
+            entry_name = tk.Entry(window_edit)
+            entry_name.insert(0, name)
+            entry_name.grid(row=1, column=1)
             entry_freq = tk.Entry(window_edit)
             entry_freq.insert(0, freq)
-            entry_freq.grid(row=5, column=1)
+            entry_freq.grid(row=2, column=1)
+            tk.Button(window_edit, text='Ok', command=edit_entry).grid(row=3, columnspan=2)
 
 
 def open_new_window():
