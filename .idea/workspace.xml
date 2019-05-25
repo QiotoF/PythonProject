@@ -13,8 +13,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Work/Scripts/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="291">
-              <caret line="88" column="66" selection-start-line="88" selection-start-column="66" selection-end-line="88" selection-end-column="66" />
+            <state relative-caret-position="338">
+              <caret line="270" lean-forward="true" selection-start-line="270" selection-end-line="270" />
               <folding>
                 <element signature="e#86#96#0" expanded="true" />
               </folding>
@@ -31,6 +31,7 @@
       <find>df</find>
       <find>selection</find>
       <find>window_new</find>
+      <find>self.</find>
     </findStrings>
     <replaceStrings>
       <replace />
@@ -50,7 +51,7 @@
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="415" />
+    <option name="x" value="5" />
     <option name="y" value="-9" />
     <option name="width" value="1400" />
     <option name="height" value="784" />
@@ -178,12 +179,12 @@
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.48421052" visible="true" weight="0.24042273" />
-      <window_info id="Structure" order="1" sideWeight="0.51578945" side_tool="true" visible="true" weight="0.24042273" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.48514852" visible="true" weight="0.24042273" />
+      <window_info id="Structure" order="1" sideWeight="0.5148515" side_tool="true" visible="true" weight="0.24042273" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32956153" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.3281471" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.3281471" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39886847" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -221,8 +222,8 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Work/Scripts/main.py</url>
-          <line>30</line>
-          <option name="timeStamp" value="32" />
+          <line>138</line>
+          <option name="timeStamp" value="33" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -274,8 +275,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Work/Scripts/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="291">
-          <caret line="88" column="66" selection-start-line="88" selection-start-column="66" selection-end-line="88" selection-end-column="66" />
+        <state relative-caret-position="338">
+          <caret line="270" lean-forward="true" selection-start-line="270" selection-end-line="270" />
           <folding>
             <element signature="e#86#96#0" expanded="true" />
           </folding>

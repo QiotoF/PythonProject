@@ -16,9 +16,41 @@ sys.path.append('../Library/')
 
 
 def open_edit_window():
+    global df
+
     def edit_entry():
-        
+        if selected_database.get() == 1:
+            keys = ['Название', 'Дата выхода', 'Конфигурация памяти, ГБ', 'Энергопотребление, Вт', 'Far Cry 5, FPS',
+                    'Fallout 4, FPS', 'The Witcher 3, FPS', '3DMark Cloud Gate', '3DMark Fire Strike',
+                    'Средняя цена, ₽', 'Архитектура', 'NVIDIA SLI', 'RTX', 'Базовая тактовая частота, МГц']
+            values = [
+                entry_name.get(),
+                entry_date.get(),
+                entry_memory.get(),
+                entry_power.get(),
+                entry_farcry5.get(),
+                entry_fallout4.get(),
+                entry_thewitcher3.get(),
+                entry_cloudgate.get(),
+                entry_firestrike.get(),
+                entry_price.get(),
+                entry_arch.get(),
+                entry_sli.get(),
+                entry_rtx.get(),
+                entry_freq.get()
+            ]
+            entry = dict(zip([x for x in keys], [y for y in values]))
+            df.loc[(entry['Название'], int(entry['Конфигурация памяти, ГБ'])), list(df.columns)] = [entry[x] for x in
+                                                                                                    df.columns]
+        # elif selected_database.get() == 2:
+
+
+        change_database()
+        window_edit.destroy()
+
     entry = tree.focus()
+    window_edit = tk.Toplevel(window)
+
     if selected_database.get() == 1:
         if '{' in entry:
             y = entry.split('}')
@@ -30,8 +62,6 @@ def open_edit_window():
             k1 = y[0]
             k2 = y[2]
         key = (k1, int(k2))
-    window_edit = tk.Toplevel(window)
-    if selected_database.get() == 1:
         tk.Label(window_edit, text='Новая запись в базе данных').grid(row=0, columnspan=2)
         tk.Label(window_edit, text='Имя:').grid(row=1, column=0)
         tk.Label(window_edit, text='Дата выхода:').grid(row=2, column=0)
@@ -91,6 +121,37 @@ def open_edit_window():
         entry_freq.insert(0, df.loc[key]['Базовая тактовая частота, МГц'])
         entry_freq.grid(row=14, column=1)
         tk.Button(window_edit, text='Ok', command=edit_entry).grid(row=15, columnspan=2)
+    else:
+        if '{' in entry:
+            key = entry.split('}')[0][1:]
+        else:
+            key = entry.split(' ')[0]
+        for index in df.index:
+            if df.loc[index]['Название'] == key:
+                name = df.loc[index]['Название']
+                arch = df.loc[index]['Архитектура']
+                sli = df.loc[index]['NVIDIA SLI']
+                rtx = df.loc[index]['RTX']
+                freq = df.loc[index]['Базовая тактовая частота, МГц']
+        if selected_database.get() == 2:
+            tk.Label(window_edit, text='Имя:').grid(row=1, column=0)
+            tk.Label(window_edit, text='Архитектура').grid(row=2, column=0)
+            entry_name = tk.Entry(window_edit)
+            entry_name.insert(0, name)
+            entry_name.grid(row=1, column=1)
+            entry_arch = tk.Entry(window_edit)
+            entry_arch.insert(0, arch)
+            entry_arch.grid(row=2, column=1)
+        else:
+            entry_sli = tk.Entry(window_edit)
+            entry_sli.insert(0, sli)
+            entry_sli.grid(row=3, column=1)
+            entry_rtx = tk.Entry(window_edit)
+            entry_rtx.insert(0, rtx)
+            entry_rtx.grid(row=4, column=1)
+            entry_freq = tk.Entry(window_edit)
+            entry_freq.insert(0, freq)
+            entry_freq.grid(row=5, column=1)
 
 
 def open_new_window():
