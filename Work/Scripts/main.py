@@ -37,8 +37,9 @@ def open_new_window():
             entry_freq.get()
         ]
         entry = dict(zip([x for x in keys], [y for y in values]))
-        df.loc[(entry['Название'], entry['Конфигурация памяти, ГБ']), list(df.columns)] = [entry[x] for x in df.columns]
+        df.loc[(entry['Название'], int(entry['Конфигурация памяти, ГБ'])), list(df.columns)] = [entry[x] for x in df.columns]
         change_database()
+        window_new.destroy()
 
     window_new = tk.Toplevel(window)
     tk.Label(window_new, text='Новая запись в базе данных').grid(row=0, columnspan=2)
@@ -52,6 +53,10 @@ def open_new_window():
     tk.Label(window_new, text='3DMark Cloud Gate').grid(row=8, column=0)
     tk.Label(window_new, text='3DMark Fire Strike').grid(row=9, column=0)
     tk.Label(window_new, text='Средняя цена, руб.').grid(row=10, column=0)
+    tk.Label(window_new, text='Архитектура').grid(row=11, column=0)
+    tk.Label(window_new, text='NVIDIA SLI').grid(row=12, column=0)
+    tk.Label(window_new, text='RTX').grid(row=13, column=0)
+    tk.Label(window_new, text='Базовая тактовая частота').grid(row=14, column=0)
 
     entry_name = tk.Entry(window_new)
     entry_name.grid(row=1, column=1)
@@ -81,7 +86,7 @@ def open_new_window():
     entry_rtx.grid(row=13, column=1)
     entry_freq = tk.Entry(window_new)
     entry_freq.grid(row=14, column=1)
-    tk.Button(window_new, text='Добавить', command=new_entry).grid(row=11, columnspan=2)
+    tk.Button(window_new, text='Добавить', command=new_entry).grid(row=15, columnspan=2)
 
 
 def make_list(df):
@@ -134,21 +139,31 @@ def new_tree(col, l):
 
 
 def delete_entries():
+    global df
     entries = tree.selection()
     if selected_database.get() == 1:
         for x in entries:
-            # x1 = x.split('}')
-            # k1 = x1[0][1:]
-            # x2 = x.split('{')
-            # k2 = x2[3][:len(x2[2]) - 2]
-            vals = x.split(' ')
-            k1 = vals[0][1:len(vals[0]) - 1]
-            k2 = vals[2]
+            if '{' in x:
+                y = x.split('}')
+                k1 = y[0][1:]
+                x2 = y[1].split(' ')
+                k2 = x2[2]
+            else:
+                y = x.split(' ')
+                k1 = y[0]
+                k2 = y[2]
             print(k1, k2)
-            df = df.drop(x)
+            df = df.drop((k1, int(k2)))
     else:
-        for key in entries:
-            df = df.drop(key)
+        for x in entries:
+            if '{' in x:
+                key = x.split('}')[0][1:]
+
+            else:
+                key = x.split(' ')[0]
+            for index in df.index:
+                if df.loc[index]['Название'] == key:
+                    df = df.drop(index)
     change_database()
 
 
