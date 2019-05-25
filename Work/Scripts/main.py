@@ -15,6 +15,84 @@ from tkinter import IntVar
 sys.path.append('../Library/')
 
 
+def open_edit_window():
+    def edit_entry():
+        
+    entry = tree.focus()
+    if selected_database.get() == 1:
+        if '{' in entry:
+            y = entry.split('}')
+            k1 = y[0][1:]
+            x2 = y[1].split(' ')
+            k2 = int(float(x2[2]))
+        else:
+            y = entry.split(' ')
+            k1 = y[0]
+            k2 = y[2]
+        key = (k1, int(k2))
+    window_edit = tk.Toplevel(window)
+    if selected_database.get() == 1:
+        tk.Label(window_edit, text='Новая запись в базе данных').grid(row=0, columnspan=2)
+        tk.Label(window_edit, text='Имя:').grid(row=1, column=0)
+        tk.Label(window_edit, text='Дата выхода:').grid(row=2, column=0)
+        tk.Label(window_edit, text='Конфигурация памяти, ГБ:').grid(row=3, column=0)
+        tk.Label(window_edit, text='Энергопотребление').grid(row=4, column=0)
+        tk.Label(window_edit, text='Far Cry 5, FPS').grid(row=5, column=0)
+        tk.Label(window_edit, text='Fallout 4, FPS').grid(row=6, column=0)
+        tk.Label(window_edit, text='The Witcher 3, FPS').grid(row=7, column=0)
+        tk.Label(window_edit, text='3DMark Cloud Gate').grid(row=8, column=0)
+        tk.Label(window_edit, text='3DMark Fire Strike').grid(row=9, column=0)
+        tk.Label(window_edit, text='Средняя цена, руб.').grid(row=10, column=0)
+        tk.Label(window_edit, text='Архитектура').grid(row=11, column=0)
+        tk.Label(window_edit, text='NVIDIA SLI').grid(row=12, column=0)
+        tk.Label(window_edit, text='RTX').grid(row=13, column=0)
+        tk.Label(window_edit, text='Базовая тактовая частота').grid(row=14, column=0)
+
+        entry_name = tk.Entry(window_edit)
+        entry_name.insert(0, df.loc[key]['Название'])
+        entry_name.grid(row=1, column=1)
+        entry_date = tk.Entry(window_edit)
+        entry_date.insert(0, df.loc[key]['Дата выхода'])
+        entry_date.grid(row=2, column=1)
+        entry_memory = tk.Entry(window_edit)
+        entry_memory.insert(0, df.loc[key]['Конфигурация памяти, ГБ'])
+        entry_memory.grid(row=3, column=1)
+        entry_power = tk.Entry(window_edit)
+        entry_power.insert(0, df.loc[key]['Энергопотребление, Вт'])
+        entry_power.grid(row=4, column=1)
+        entry_farcry5 = tk.Entry(window_edit)
+        entry_farcry5.insert(0, df.loc[key]['Far Cry 5, FPS'])
+        entry_farcry5.grid(row=5, column=1)
+        entry_fallout4 = tk.Entry(window_edit)
+        entry_fallout4.insert(0, df.loc[key]['Fallout 4, FPS'])
+        entry_fallout4.grid(row=6, column=1)
+        entry_thewitcher3 = tk.Entry(window_edit)
+        entry_thewitcher3.insert(0, df.loc[key]['The Witcher 3, FPS'])
+        entry_thewitcher3.grid(row=7, column=1)
+        entry_cloudgate = tk.Entry(window_edit)
+        entry_cloudgate.insert(0, df.loc[key]['3DMark Cloud Gate'])
+        entry_cloudgate.grid(row=8, column=1)
+        entry_firestrike = tk.Entry(window_edit)
+        entry_firestrike.insert(0, df.loc[key]['3DMark Fire Strike'])
+        entry_firestrike.grid(row=9, column=1)
+        entry_price = tk.Entry(window_edit)
+        entry_price.insert(0, df.loc[key]['Средняя цена, ₽'])
+        entry_price.grid(row=10, column=1)
+        entry_arch = tk.Entry(window_edit)
+        entry_arch.insert(0, df.loc[key]['Архитектура'])
+        entry_arch.grid(row=11, column=1)
+        entry_sli = tk.Entry(window_edit)
+        entry_sli.insert(0, df.loc[key]['NVIDIA SLI'])
+        entry_sli.grid(row=12, column=1)
+        entry_rtx = tk.Entry(window_edit)
+        entry_rtx.insert(0, df.loc[key]['RTX'])
+        entry_rtx.grid(row=13, column=1)
+        entry_freq = tk.Entry(window_edit)
+        entry_freq.insert(0, df.loc[key]['Базовая тактовая частота, МГц'])
+        entry_freq.grid(row=14, column=1)
+        tk.Button(window_edit, text='Ok', command=edit_entry).grid(row=15, columnspan=2)
+
+
 def open_new_window():
     def new_entry():
         keys = ['Название', 'Дата выхода', 'Конфигурация памяти, ГБ', 'Энергопотребление, Вт', 'Far Cry 5, FPS',
@@ -37,7 +115,8 @@ def open_new_window():
             entry_freq.get()
         ]
         entry = dict(zip([x for x in keys], [y for y in values]))
-        df.loc[(entry['Название'], int(entry['Конфигурация памяти, ГБ'])), list(df.columns)] = [entry[x] for x in df.columns]
+        df.loc[(entry['Название'], int(entry['Конфигурация памяти, ГБ'])), list(df.columns)] = [entry[x] for x in
+                                                                                                df.columns]
         change_database()
         window_new.destroy()
 
@@ -127,7 +206,7 @@ def change_database(*args):
     arg = make_list(df)
     tree = new_tree(arg[0], arg[1])
     tree.pack()
-    window.update()
+
 
 def new_tree(col, l):
     tree = ttk.Treeview(window, columns=col, show='headings')
@@ -178,6 +257,8 @@ btn_new = tk.Button(window, text='New', command=open_new_window)
 btn_new.pack()
 btn_delete = tk.Button(window, text='Delete', command=delete_entries)
 btn_delete.pack()
+btn_edit = tk.Button(window, text='Edit', command=open_edit_window)
+btn_edit.pack()
 selected_database = IntVar(window)
 selected_database.set(OPTIONS[1])
 options_menu = ttk.OptionMenu(window, selected_database, *OPTIONS)
