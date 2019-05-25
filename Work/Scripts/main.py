@@ -37,7 +37,8 @@ def open_new_window():
             entry_freq.get()
         ]
         entry = dict(zip([x for x in keys], [y for y in values]))
-        
+        df.loc[(entry['Название'], entry['Конфигурация памяти']), list(df.columns)] = [entry[x] for x in df.columns]
+        change_database()
 
     window_new = tk.Toplevel(window)
     tk.Label(window_new, text='Новая запись в базе данных').grid(row=0, columnspan=2)
@@ -134,6 +135,7 @@ def new_tree(col, l):
 
 df = pd.read_csv('../Data/bd.csv')
 df.index = ([(x, y) for x, y in zip(df['Название'], df['Конфигурация памяти'])])
+df.index = pd.MultiIndex.from_tuples(df.index)
 OPTIONS = [0, 1, 2, 3, 4, 5]
 window = tk.Tk()
 tree = ttk.Treeview(window, columns=tuple(df.columns), show='headings')
