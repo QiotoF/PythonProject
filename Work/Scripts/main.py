@@ -17,7 +17,7 @@ sys.path.append('../Library/')
 
 def open_new_window():
     def new_entry():
-        keys = ['Название', 'Дата выхода', 'Конфигурация памяти', 'Энергопотребление, Вт', 'Far Cry 5, FPS',
+        keys = ['Название', 'Дата выхода', 'Конфигурация памяти, ГБ', 'Энергопотребление, Вт', 'Far Cry 5, FPS',
                 'Fallout 4, FPS', 'The Witcher 3, FPS', '3DMark Cloud Gate', '3DMark Fire Strike',
                 'Средняя цена, ₽', 'Архитектура', 'NVIDIA SLI', 'RTX', 'Базовая тактовая частота, МГц']
         values = [
@@ -37,14 +37,14 @@ def open_new_window():
             entry_freq.get()
         ]
         entry = dict(zip([x for x in keys], [y for y in values]))
-        df.loc[(entry['Название'], entry['Конфигурация памяти']), list(df.columns)] = [entry[x] for x in df.columns]
+        df.loc[(entry['Название'], entry['Конфигурация памяти, ГБ']), list(df.columns)] = [entry[x] for x in df.columns]
         change_database()
 
     window_new = tk.Toplevel(window)
     tk.Label(window_new, text='Новая запись в базе данных').grid(row=0, columnspan=2)
     tk.Label(window_new, text='Имя:').grid(row=1, column=0)
     tk.Label(window_new, text='Дата выхода:').grid(row=2, column=0)
-    tk.Label(window_new, text='Конфигурация памяти:').grid(row=3, column=0)
+    tk.Label(window_new, text='Конфигурация памяти, ГБ:').grid(row=3, column=0)
     tk.Label(window_new, text='Энергопотребление').grid(row=4, column=0)
     tk.Label(window_new, text='Far Cry 5, FPS').grid(row=5, column=0)
     tk.Label(window_new, text='Fallout 4, FPS').grid(row=6, column=0)
@@ -98,12 +98,12 @@ def make_list(df):
         col = ('Название', 'Базовая тактовая частота, МГц')
         s = list(set([(x, y) for x, y in zip(df['Название'], df['Базовая тактовая частота, МГц'])]))
     else:
-        col = (
-            'Название', 'Дата выхода', 'Конфигурация памяти', 'Энергопотребление, Вт', 'Far Cry 5, FPS',
+        col = [
+            'Название', 'Дата выхода', 'Конфигурация памяти, ГБ', 'Энергопотребление, Вт', 'Far Cry 5, FPS',
             'Fallout 4, FPS',
-            'The Witcher 3, FPS', '3DMark Cloud Gate', '3DMark Fire Strike', 'Средняя цена, ₽')
+            'The Witcher 3, FPS', '3DMark Cloud Gate', '3DMark Fire Strike', 'Средняя цена, ₽']
         s = list(
-            [(x1, x2, x3, x4, x5, x6, x7, x8, x9, x10) for x1, x2, x3, x4, x5, x6, x7, x8, x9, x10 in zip(df[col[0]],
+            [[x1, x2, x3, x4, x5, x6, x7, x8, x9, x10] for x1, x2, x3, x4, x5, x6, x7, x8, x9, x10 in zip(df[col[0]],
                                                                                                           df[col[1]],
                                                                                                           df[col[2]],
                                                                                                           df[col[3]],
@@ -141,8 +141,8 @@ def delete_entries():
             # k1 = x1[0][1:]
             # x2 = x.split('{')
             # k2 = x2[3][:len(x2[2]) - 2]
-            vals = x.split('} {')
-            k1 = vals[0][1:]
+            vals = x.split(' ')
+            k1 = vals[0][1:len(vals[0]) - 1]
             k2 = vals[2]
             print(k1, k2)
             df = df.drop(x)
@@ -153,7 +153,7 @@ def delete_entries():
 
 
 df = pd.read_csv('../Data/bd.csv')
-df.index = ([(x, y) for x, y in zip(df['Название'], df['Конфигурация памяти'])])
+df.index = ([(x, y) for x, y in zip(df['Название'], df['Конфигурация памяти, ГБ'])])
 df.index = pd.MultiIndex.from_tuples(df.index)
 OPTIONS = [0, 1, 2, 3, 4, 5]
 window = tk.Tk()
