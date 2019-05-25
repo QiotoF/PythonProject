@@ -133,6 +133,25 @@ def new_tree(col, l):
     return tree
 
 
+def delete_entries():
+    entries = tree.selection()
+    if selected_database.get() == 1:
+        for x in entries:
+            # x1 = x.split('}')
+            # k1 = x1[0][1:]
+            # x2 = x.split('{')
+            # k2 = x2[3][:len(x2[2]) - 2]
+            vals = x.split('} {')
+            k1 = vals[0][1:]
+            k2 = vals[2]
+            print(k1, k2)
+            df = df.drop(x)
+    else:
+        for key in entries:
+            df = df.drop(key)
+    change_database()
+
+
 df = pd.read_csv('../Data/bd.csv')
 df.index = ([(x, y) for x, y in zip(df['Название'], df['Конфигурация памяти'])])
 df.index = pd.MultiIndex.from_tuples(df.index)
@@ -142,6 +161,8 @@ tree = ttk.Treeview(window, columns=tuple(df.columns), show='headings')
 tree.pack()
 btn_new = tk.Button(window, text='New', command=open_new_window)
 btn_new.pack()
+btn_delete = tk.Button(window, text='Delete', command=delete_entries)
+btn_delete.pack()
 selected_database = IntVar(window)
 selected_database.set(OPTIONS[1])
 options_menu = ttk.OptionMenu(window, selected_database, *OPTIONS)
