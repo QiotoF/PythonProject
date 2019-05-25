@@ -16,6 +16,29 @@ sys.path.append('../Library/')
 
 
 def open_new_window():
+    def new_entry():
+        keys = ['Название', 'Дата выхода', 'Конфигурация памяти', 'Энергопотребление, Вт', 'Far Cry 5, FPS',
+                'Fallout 4, FPS', 'The Witcher 3, FPS', '3DMark Cloud Gate', '3DMark Fire Strike',
+                'Средняя цена, ₽', 'Архитектура', 'NVIDIA SLI', 'RTX', 'Базовая тактовая частота, МГц']
+        values = [
+            entry_name.get(),
+            entry_date.get(),
+            entry_memory.get(),
+            entry_power.get(),
+            entry_farcry5.get(),
+            entry_fallout4.get(),
+            entry_thewitcher3.get(),
+            entry_cloudgate.get(),
+            entry_firestrike.get(),
+            entry_price.get(),
+            entry_arch.get(),
+            entry_sli.get(),
+            entry_rtx.get(),
+            entry_freq.get()
+        ]
+        entry = dict(zip([x for x in keys], [y for y in values]))
+        
+
     window_new = tk.Toplevel(window)
     tk.Label(window_new, text='Новая запись в базе данных').grid(row=0, columnspan=2)
     tk.Label(window_new, text='Имя:').grid(row=1, column=0)
@@ -49,7 +72,15 @@ def open_new_window():
     entry_firestrike.grid(row=9, column=1)
     entry_price = tk.Entry(window_new)
     entry_price.grid(row=10, column=1)
-    tk.Button(window_new, text='Добавить').grid(row=11, columnspan=2)
+    entry_arch = tk.Entry(window_new)
+    entry_arch.grid(row=11, column=1)
+    entry_sli = tk.Entry(window_new)
+    entry_sli.grid(row=12, column=1)
+    entry_rtx = tk.Entry(window_new)
+    entry_rtx.grid(row=13, column=1)
+    entry_freq = tk.Entry(window_new)
+    entry_freq.grid(row=14, column=1)
+    tk.Button(window_new, text='Добавить', command=new_entry).grid(row=11, columnspan=2)
 
 
 def make_list(df):
