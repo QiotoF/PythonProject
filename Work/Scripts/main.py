@@ -127,7 +127,7 @@ def change_database(*args):
     arg = make_list(df)
     tree = new_tree(arg[0], arg[1])
     tree.pack()
-
+    window.update()
 
 def new_tree(col, l):
     tree = ttk.Treeview(window, columns=col, show='headings')
@@ -147,7 +147,7 @@ def delete_entries():
                 y = x.split('}')
                 k1 = y[0][1:]
                 x2 = y[1].split(' ')
-                k2 = x2[2]
+                k2 = int(float(x2[2]))
             else:
                 y = x.split(' ')
                 k1 = y[0]
@@ -172,7 +172,7 @@ df.index = ([(x, y) for x, y in zip(df['Название'], df['Конфигур
 df.index = pd.MultiIndex.from_tuples(df.index)
 OPTIONS = [0, 1, 2, 3, 4, 5]
 window = tk.Tk()
-tree = ttk.Treeview(window, columns=tuple(df.columns), show='headings')
+tree = ttk.Treeview(window, show='headings')
 tree.pack()
 btn_new = tk.Button(window, text='New', command=open_new_window)
 btn_new.pack()
