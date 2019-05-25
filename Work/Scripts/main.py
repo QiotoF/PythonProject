@@ -52,39 +52,68 @@ def open_new_window():
     tk.Button(window_new, text='Добавить').grid(row=11, columnspan=2)
 
 
+def make_list(df):
+    if selected_database.get() == 2:
+        col = ('Название', 'Архитектура')
+        s = list(set([(x, y) for x, y in zip(df['Название'], df['Архитектура'])]))
+    elif selected_database.get() == 3:
+        col = ('Название', 'NVIDIA SLI')
+        s = list(set([(x, y) for x, y in zip(df['Название'], df['NVIDIA SLI'])]))
+    elif selected_database.get() == 4:
+        col = ('Название', 'RTX')
+        s = list(set([(x, y) for x, y in zip(df['Название'], df['RTX'])]))
+    elif selected_database.get() == 5:
+        col = ('Название', 'Базовая тактовая частота, МГц')
+        s = list(set([(x, y) for x, y in zip(df['Название'], df['Базовая тактовая частота, МГц'])]))
+    else:
+        col = (
+            'Название', 'Дата выхода', 'Конфигурация памяти', 'Энергопотребление, Вт', 'Far Cry 5, FPS',
+            'Fallout 4, FPS',
+            'The Witcher 3, FPS', '3DMark Cloud Gate', '3DMark Fire Strike', 'Средняя цена, ₽')
+        s = list(
+            [(x1, x2, x3, x4, x5, x6, x7, x8, x9, x10) for x1, x2, x3, x4, x5, x6, x7, x8, x9, x10 in zip(df[col[0]],
+                                                                                                          df[col[1]],
+                                                                                                          df[col[2]],
+                                                                                                          df[col[3]],
+                                                                                                          df[col[4]],
+                                                                                                          df[col[5]],
+                                                                                                          df[col[6]],
+                                                                                                          df[col[7]],
+                                                                                                          df[col[8]],
+                                                                                                          df[col[9]])])
+    return col, s
+
+
+def change_database(*args):
+    global tree
+    tree.destroy()
+    arg = make_list(df)
+    tree = new_tree(arg[0], arg[1])
+    tree.pack()
+
+
+def new_tree(col, l):
+    tree = ttk.Treeview(window, columns=col, show='headings')
+    for x in col:
+        tree.heading(x, text=x)
+    for x in l:
+        tree.insert("", "end", x, values=x)
+    return tree
+
+
 df = pd.read_csv('../Data/bd.csv')
 df.index = ([(x, y) for x, y in zip(df['Название'], df['Конфигурация памяти'])])
-OPTIONS = [1, 2, 3, 4, 5]
+OPTIONS = [0, 1, 2, 3, 4, 5]
 window = tk.Tk()
 tree = ttk.Treeview(window, columns=tuple(df.columns), show='headings')
-for x in df.columns:
-    tree.heading(x, text=x)
-for index, row in df.iterrows():
-    tree.insert("", "end", index, values=list(row))
 tree.pack()
 btn_new = tk.Button(window, text='New', command=open_new_window)
 btn_new.pack()
 selected_database = IntVar(window)
-selected_database.set(OPTIONS[0])
+selected_database.set(OPTIONS[1])
 options_menu = ttk.OptionMenu(window, selected_database, *OPTIONS)
 options_menu.pack()
-# selected_database.trace('w', change_database)
-
-
-# def change_database(*args):
-#     global tree
-#     tree.destroy()
-#     tree = new_tree(dataframes[selected_database.get() - 1])
-#     tree.pack()
-#
-#
-# def new_tree(df):
-#     tree = ttk.Treeview(window, columns=tuple(df.columns), show='headings')
-#     for x in df.columns:
-#         tree.heading(x, text=x)
-#     for index, row in df.iterrows():
-#         tree.insert("", "end", index, values=list(row))
-#     return tree
-
+selected_database.trace('w', change_database)
+change_database()
 
 window.mainloop()
