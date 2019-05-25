@@ -68,7 +68,7 @@ selected_database = IntVar(window)
 selected_database.set(OPTIONS[0])
 options_menu = ttk.OptionMenu(window, selected_database, *OPTIONS)
 options_menu.pack()
-selected_database.trace('w', change_database)
+# selected_database.trace('w', change_database)
 
 
 # def change_database(*args):
