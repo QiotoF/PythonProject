@@ -15,6 +15,27 @@ from tkinter import IntVar
 sys.path.append('../Library/')
 
 
+def sortby(tree, col, descending):
+    def sortSecond(val):
+        return val[1]
+
+    def change_numeric(data):
+        return [(int(x[0]), x[1]) for x in data]
+
+    """sort tree contents when a column header is clicked on"""
+    # grab values to sort
+    data = [(tree.set(child, col), child) for child in tree.get_children('')]
+    # if the data to be sorted is numeric change to float
+    if data[0][0].isdigit():
+        data = change_numeric(data)
+    # now sort the data in place
+    data.sort(reverse=descending)
+    for ix, item in enumerate(data):
+        tree.move(item[1], '', ix)
+    # switch the heading so it will sort in the opposite direction
+    tree.heading(col, command=lambda col=col: sortby(tree, col, int(not descending)))
+
+
 def open_edit_window():
     global df
 
@@ -65,7 +86,7 @@ def open_edit_window():
                 if df.loc[index]['Название'] == key:
                     df.loc[index, 'Базовая тактовая частота, МГц'] = values[1]
 
-        change_database()
+        update_table()
         window_edit.destroy()
 
     entry = tree.focus()
@@ -219,7 +240,7 @@ def open_new_window():
         entry = dict(zip([x for x in keys], [y for y in values]))
         df.loc[(entry['Название'], int(entry['Конфигурация памяти, ГБ'])), list(df.columns)] = [entry[x] for x in
                                                                                                 df.columns]
-        change_database()
+        update_table()
         window_new.destroy()
 
     window_new = tk.Toplevel(window)
@@ -302,7 +323,7 @@ def make_list(df):
     return col, s
 
 
-def change_database(*args):
+def update_table(*args):
     global tree
     tree.destroy()
     arg = make_list(df)
@@ -313,7 +334,7 @@ def change_database(*args):
 def new_tree(col, l):
     tree = ttk.Treeview(window, columns=col, show='headings')
     for x in col:
-        tree.heading(x, text=x)
+        tree.heading(x, text=x, command=lambda c=x: sortby(tree, c, 0))
     for x in l:
         tree.insert("", "end", x, values=x)
     return tree
@@ -345,7 +366,7 @@ def delete_entries():
             for index in df.index:
                 if df.loc[index]['Название'] == key:
                     df = df.drop(index)
-    change_database()
+    update_table()
 
 
 df = pd.read_csv('../Data/bd.csv')
@@ -365,7 +386,7 @@ selected_database = IntVar(window)
 selected_database.set(OPTIONS[1])
 options_menu = ttk.OptionMenu(window, selected_database, *OPTIONS)
 options_menu.pack()
-selected_database.trace('w', change_database)
-change_database()
+selected_database.trace('w', update_table)
+update_table()
 
 window.mainloop()
