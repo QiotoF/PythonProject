@@ -10,6 +10,7 @@ import sys
 import pandas as pd
 import tkinter as tk
 import tkinter.ttk as ttk
+import tkinter.font as tkFont
 from tkinter import IntVar
 
 sys.path.append('../Library/')
@@ -328,12 +329,13 @@ def update_table(*args):
     tree.destroy()
     arg = make_list(df)
     tree = new_tree(arg[0], arg[1])
-    tree.pack()
+    tree.grid(row=1, columnspan=4)
 
 
 def new_tree(col, l):
     tree = ttk.Treeview(window, columns=col, show='headings')
     for x in col:
+        tree.column(x, width=int(tkFont.Font().measure(x) / 1.2))
         tree.heading(x, text=x, command=lambda c=x: sortby(tree, c, 0))
     for x in l:
         tree.insert("", "end", x, values=x)
@@ -373,19 +375,45 @@ df = pd.read_csv('../Data/bd.csv')
 df.index = ([(x, y) for x, y in zip(df['Название'], df['Конфигурация памяти, ГБ'])])
 df.index = pd.MultiIndex.from_tuples(df.index)
 OPTIONS = [0, 1, 2, 3, 4, 5]
+
 window = tk.Tk()
+
+canvas = tk.Canvas(window, height=100, width=100)
+background_image = tk.PhotoImage(file='../Graphics/background.png')
+background_label = tk.Label(window, image=background_image)
+background_label.image = background_image
+background_label.place(x=0, y=0, relwidth=1, relheight=1)
+canvas.grid(row=0, column=0, columnspan=2)
+
+btn_new = tk.Button(window, text='New', command=open_new_window, activebackground='#76b900', activeforeground='#1A1918',
+                    bg='#1A1918', fg='#76b900', font=('Roboto', 12, 'bold'))
+btn_new.grid(row=0, column=0, sticky='WN', padx=5, pady=5)
+btn_delete = tk.Button(window, text='Delete', command=delete_entries, activebackground='#76b900',
+                       activeforeground='#1A1918',
+                       bg='#1A1918', fg='#76b900', font=('Roboto', 12, 'bold'))
+btn_delete.grid(row=0, column=1, sticky='WN', pady=5)
+#btn_edit = tk.Button(window, text='Edit', command=open_edit_window)
+#btn_edit.grid(row=0, column=5)
+
+frame = tk.Frame(window, height=1, width=1200)
+frame.grid(column=3)
+
 tree = ttk.Treeview(window, show='headings')
-tree.pack()
-btn_new = tk.Button(window, text='New', command=open_new_window)
-btn_new.pack()
-btn_delete = tk.Button(window, text='Delete', command=delete_entries)
-btn_delete.pack()
-btn_edit = tk.Button(window, text='Edit', command=open_edit_window)
-btn_edit.pack()
+vsb = ttk.Scrollbar(orient="vertical",
+                    command=tree.yview)
+hsb = ttk.Scrollbar(orient="horizontal",
+                    command=tree.xview)
+tree.configure(yscrollcommand=vsb.set,
+               xscrollcommand=hsb.set)
+vsb.grid(row=1, column=5)
+hsb.grid(row=2, columnspan=10)
+tree.grid(row=1, column=0, columnspan=30)
+# tree.pack()
+
 selected_database = IntVar(window)
 selected_database.set(OPTIONS[1])
 options_menu = ttk.OptionMenu(window, selected_database, *OPTIONS)
-options_menu.pack()
+#options_menu.grid(row=0, column=5)
 selected_database.trace('w', update_table)
 update_table()
 
