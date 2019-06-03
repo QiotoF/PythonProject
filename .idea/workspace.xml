@@ -13,8 +13,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Work/Scripts/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="240">
-              <caret line="444" lean-forward="true" selection-start-line="444" selection-end-line="444" />
+            <state relative-caret-position="342">
+              <caret line="468" column="28" selection-start-line="468" selection-start-column="28" selection-end-line="468" selection-end-column="28" />
               <folding>
                 <element signature="e#86#96#0" expanded="true" />
               </folding>
@@ -60,7 +60,7 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="290" />
     <option name="y" value="-10" />
     <option name="width" value="1400" />
@@ -294,10 +294,24 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$USER_HOME$/.PyCharmCE2019.1/system/python_stubs/1236083176/builtins.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="227">
+          <caret line="5186" column="8" selection-start-line="5186" selection-start-column="8" selection-end-line="5186" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../Пример2/Work/Scripts/main.pyw">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="304" column="33" lean-forward="true" selection-start-line="304" selection-start-column="33" selection-end-line="304" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Work/Scripts/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="444" lean-forward="true" selection-start-line="444" selection-end-line="444" />
+        <state relative-caret-position="342">
+          <caret line="468" column="28" selection-start-line="468" selection-start-column="28" selection-end-line="468" selection-end-column="28" />
           <folding>
             <element signature="e#86#96#0" expanded="true" />
           </folding>
