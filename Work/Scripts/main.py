@@ -6,14 +6,14 @@ Created on Tue May 14 21:56:35 2019
 """
 
 import sys
-
-import pandas as pd
 import tkinter as tk
+import tkinter.font as tkfont
 import tkinter.ttk as ttk
-import tkinter.font as tkFont
 from tkinter import IntVar
+import pandas as pd
 
 sys.path.append('../Library/')
+import databin
 
 
 def sortby(tree, col, descending):
@@ -329,16 +329,31 @@ def update_table(*args):
     tree.destroy()
     arg = make_list(df)
     tree = new_tree(arg[0], arg[1])
-    tree.grid(row=1, columnspan=4)
+
+    vsb = ttk.Scrollbar(orient="vertical",
+                        command=tree.yview)
+    hsb = ttk.Scrollbar(orient="horizontal",
+                        command=tree.xview)
+    tree.configure(yscrollcommand=vsb.set,
+                   xscrollcommand=hsb.set)
+    tree.tag_configure('mytag', background='blue')
+    # vsb.grid(row=1, column=5, sticky='nswe')
+    # hsb.grid(row=2, columnspan=10, sticky='nswe')
+    vsb.place(x=1450, y=50, height=324)
+    # hsb.place(x=10, y=400)
+    # tree.grid(row=1, column=0, columnspan=30, in_=container)
+
+    # tree.grid(row=1, columnspan=4, sticky='WN')
+    tree.place(x=720, y=220, anchor='center')
 
 
 def new_tree(col, l):
-    tree = ttk.Treeview(window, columns=col, show='headings')
+    tree = ttk.Treeview(window, columns=col, show='headings', height=15, style="mystyle.Treeview")
     for x in col:
-        tree.column(x, width=int(tkFont.Font().measure(x) / 1.2))
+        tree.column(x, width=int(tkfont.Font().measure(x) / 1.1))
         tree.heading(x, text=x, command=lambda c=x: sortby(tree, c, 0))
     for x in l:
-        tree.insert("", "end", x, values=x)
+        tree.insert("", "end", x, values=x, tags=('mytag',))
     return tree
 
 
@@ -371,49 +386,95 @@ def delete_entries():
     update_table()
 
 
-df = pd.read_csv('../Data/bd.csv')
+df = databin.read_from_binary('../Data/data')
+# df = pd.read_csv('../Data/bd.csv')
 df.index = ([(x, y) for x, y in zip(df['Название'], df['Конфигурация памяти, ГБ'])])
 df.index = pd.MultiIndex.from_tuples(df.index)
 OPTIONS = [0, 1, 2, 3, 4, 5]
 
 window = tk.Tk()
+window.geometry('1500x500')
+window.resizable(0, 0)
+style = ttk.Style()
+style.configure("mystyle.Treeview", highlightthickness=0, bd=0, font=('Calibri', 11))  # Modify the font of the body
+style.configure("mystyle.Treeview.Heading", font=('Calibri', 12, 'bold'),
+                background='blue')  # Modify the font of the headings
+style.layout("mystyle.Treeview", [('mystyle.Treeview.treearea', {'sticky': 'nswe'})])  # Remove the borders
 
 canvas = tk.Canvas(window, height=100, width=100)
 background_image = tk.PhotoImage(file='../Graphics/background.png')
 background_label = tk.Label(window, image=background_image)
 background_label.image = background_image
 background_label.place(x=0, y=0, relwidth=1, relheight=1)
-canvas.grid(row=0, column=0, columnspan=2)
+# canvas.grid(row=0, column=0, columnspan=2)
+canvas.place()
 
-btn_new = tk.Button(window, text='New', command=open_new_window, activebackground='#76b900', activeforeground='#1A1918',
+btn_new = tk.Button(window, width=10, text='New', command=open_new_window, activebackground='#76b900',
+                    activeforeground='#1A1918',
                     bg='#1A1918', fg='#76b900', font=('Roboto', 12, 'bold'))
-btn_new.grid(row=0, column=0, sticky='WN', padx=5, pady=5)
-btn_delete = tk.Button(window, text='Delete', command=delete_entries, activebackground='#76b900',
+# btn_new.grid(row=0, column=0, sticky='WN', padx=5, pady=5)
+btn_new.place(x=10, y=10)
+btn_delete = tk.Button(window, width=10, text='Delete', command=delete_entries, activebackground='#76b900',
                        activeforeground='#1A1918',
                        bg='#1A1918', fg='#76b900', font=('Roboto', 12, 'bold'))
-btn_delete.grid(row=0, column=1, sticky='WN', pady=5)
-#btn_edit = tk.Button(window, text='Edit', command=open_edit_window)
-#btn_edit.grid(row=0, column=5)
+# btn_delete.grid(row=0, column=1, sticky='WN', pady=5)
+btn_delete.place(x=130, y=10)
+btn_edit = tk.Button(window, width=10, text='Edit', command=open_edit_window, activebackground='#76b900',
+                     activeforeground='#1A1918',
+                     bg='#1A1918', fg='#76b900', font=('Roboto', 12, 'bold'))
+# btn_edit.grid(row=0, column=2, sticky='WN', padx=5, pady=5)
+btn_edit.place(x=250, y=10)
 
-frame = tk.Frame(window, height=1, width=1200)
-frame.grid(column=3)
+
+def save_database():
+    databin.write_to_binary(df, '../Data/data')
+
+
+btn_save = tk.Button(window, width=10, text='Save', command=save_database, activebackground='#76b900',
+                     activeforeground='#1A1918',
+                     bg='#1A1918', fg='#76b900', font=('Roboto', 12, 'bold'))
+btn_save.place(x=370, y=10)
+
+
+def restore_database():
+    global df
+    df = pd.read_csv('../Data/bd.csv')
+    df.index = ([(x, y) for x, y in zip(df['Название'], df['Конфигурация памяти, ГБ'])])
+    df.index = pd.MultiIndex.from_tuples(df.index)
+    update_table()
+
+
+btn_restore = tk.Button(window, width=10, text='Restore', command=restore_database, activebackground='#76b900',
+                        activeforeground='#1A1918',
+                        bg='#1A1918', fg='#76b900', font=('Roboto', 12, 'bold'))
+btn_restore.place(x=490, y=10)
+
+# container = ttk.Frame()
+# container.grid(row=1, columnspan=4)
+
+scrollbar_style = ttk.Style()
+scrollbar_style.configure("My.Horizontal.TScrollbar", troughcolor="red")
 
 tree = ttk.Treeview(window, show='headings')
 vsb = ttk.Scrollbar(orient="vertical",
                     command=tree.yview)
+# vsb.configure(bg='blue')
 hsb = ttk.Scrollbar(orient="horizontal",
-                    command=tree.xview)
+                    command=tree.xview, style="My.Horizontal.TScrollbar")
 tree.configure(yscrollcommand=vsb.set,
                xscrollcommand=hsb.set)
-vsb.grid(row=1, column=5)
-hsb.grid(row=2, columnspan=10)
-tree.grid(row=1, column=0, columnspan=30)
-# tree.pack()
+tree.tag_configure('f', background='black')
+# vsb.grid(row=1, column=5, sticky='nswe')
+# hsb.grid(row=2, columnspan=10, sticky='nswe')
+# vsb.place(x=400, y=10)
+# hsb.place(x=10, y=400)
+# tree.grid(row=1, column=0, columnspan=30)
 
 selected_database = IntVar(window)
 selected_database.set(OPTIONS[1])
 options_menu = ttk.OptionMenu(window, selected_database, *OPTIONS)
-#options_menu.grid(row=0, column=5)
+# options_menu.grid(row=0, column=5, sticky='NW')
+options_menu.place(x=300, y=400)
 selected_database.trace('w', update_table)
 update_table()
 
