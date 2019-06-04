@@ -387,10 +387,12 @@ def delete_entries():
     update_table()
 
 
-df = databin.read_from_binary('../Data/data')
-# df = pd.read_csv('../Data/bd.csv')
-df.index = ([(x, y) for x, y in zip(df['Название'], df['Конфигурация памяти, ГБ'])])
-df.index = pd.MultiIndex.from_tuples(df.index)
+try:
+    df = databin.read_from_binary('../Data/data')
+except:
+    df = pd.read_csv('../Data/bd.csv')
+    df.index = ([(x, y) for x, y in zip(df['Название'], df['Конфигурация памяти, ГБ'])])
+    df.index = pd.MultiIndex.from_tuples(df.index)
 OPTIONS = [0, 1, 2, 3, 4, 5]
 
 window = tk.Tk()
