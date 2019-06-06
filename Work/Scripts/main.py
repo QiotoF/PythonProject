@@ -415,21 +415,21 @@ background_label.place(x=0, y=0, relwidth=1, relheight=1)
 # canvas.grid(row=0, column=0, columnspan=2)
 canvas.place()
 
-btn_new = tk.Button(window, width=10, text='New', command=open_new_window, activebackground='#76b900',
+btn_new = tk.Button(window, width=10, text='Создать', command=open_new_window, activebackground='#76b900',
                     activeforeground='#1A1918',
                     bg='#1A1918', fg='#76b900', font=('Roboto', 12, 'bold'))
 # btn_new.grid(row=0, column=0, sticky='WN', padx=5, pady=5)
 btn_new.place(x=10, y=10)
-btn_delete = tk.Button(window, width=10, text='Delete', command=delete_entries, activebackground='#76b900',
+btn_delete = tk.Button(window, width=10, text='Удалить', command=delete_entries, activebackground='#76b900',
                        activeforeground='#1A1918',
                        bg='#1A1918', fg='#76b900', font=('Roboto', 12, 'bold'))
 # btn_delete.grid(row=0, column=1, sticky='WN', pady=5)
-btn_delete.place(x=130, y=10)
-btn_edit = tk.Button(window, width=10, text='Edit', command=open_edit_window, activebackground='#76b900',
+btn_delete.place(x=160, y=10)
+btn_edit = tk.Button(window, width=10, text='Редактировать', command=open_edit_window, activebackground='#76b900',
                      activeforeground='#1A1918',
                      bg='#1A1918', fg='#76b900', font=('Roboto', 12, 'bold'))
 # btn_edit.grid(row=0, column=2, sticky='WN', padx=5, pady=5)
-btn_edit.place(x=250, y=10)
+btn_edit.place(x=310, y=10)
 
 
 def save_database():
@@ -437,10 +437,10 @@ def save_database():
     showinfo("Успешно!", "База данных сохранена!")
 
 
-btn_save = tk.Button(window, width=10, text='Save', command=save_database, activebackground='#76b900',
+btn_save = tk.Button(window, width=10, text='Сохранить', command=save_database, activebackground='#76b900',
                      activeforeground='#1A1918',
                      bg='#1A1918', fg='#76b900', font=('Roboto', 12, 'bold'))
-btn_save.place(x=370, y=10)
+btn_save.place(x=460, y=10)
 
 
 def restore_database():
@@ -452,10 +452,10 @@ def restore_database():
     showinfo("Успешно!", "База данных восстановлена!")
 
 
-btn_restore = tk.Button(window, width=10, text='Restore', command=restore_database, activebackground='#76b900',
+btn_restore = tk.Button(window, width=10, text='Восстановить', command=restore_database, activebackground='#76b900',
                         activeforeground='#1A1918',
                         bg='#1A1918', fg='#76b900', font=('Roboto', 12, 'bold'))
-btn_restore.place(x=490, y=10)
+btn_restore.place(x=610, y=10)
 
 
 def report():
@@ -494,10 +494,10 @@ def report():
     showinfo("Успешно!", "Отчёт сохранён в папке Output!")
 
 
-btn_report = tk.Button(window, width=10, text='Report', command=report, activebackground='#76b900',
+btn_report = tk.Button(window, width=10, text='Отчет', command=report, activebackground='#76b900',
                        activeforeground='#1A1918',
                        bg='#1A1918', fg='#76b900', font=('Roboto', 12, 'bold'))
-btn_report.place(x=610, y=10)
+btn_report.place(x=760, y=10)
 
 # container = ttk.Frame()
 # container.grid(row=1, columnspan=4)
