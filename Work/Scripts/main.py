@@ -10,6 +10,7 @@ import tkinter as tk
 import tkinter.font as tkfont
 import tkinter.ttk as ttk
 from tkinter import IntVar
+from tkinter.messagebox import showinfo
 import pandas as pd
 import numpy as np
 
@@ -337,7 +338,7 @@ def update_table(*args):
                         command=tree.xview)
     tree.configure(yscrollcommand=vsb.set,
                    xscrollcommand=hsb.set)
-    tree.tag_configure('mytag', background='blue')
+    tree.tag_configure('mytag', background='#76B900')
     # vsb.grid(row=1, column=5, sticky='nswe')
     # hsb.grid(row=2, columnspan=10, sticky='nswe')
     vsb.place(x=1450, y=50, height=324)
@@ -401,7 +402,7 @@ window.resizable(0, 0)
 style = ttk.Style()
 style.configure("mystyle.Treeview", highlightthickness=0, bd=0, font=('Calibri', 11))  # Modify the font of the body
 style.configure("mystyle.Treeview.Heading", font=('Calibri', 12, 'bold'),
-                background='blue')  # Modify the font of the headings
+                background='#76B900')  # Modify the font of the headings
 style.layout("mystyle.Treeview", [('mystyle.Treeview.treearea', {'sticky': 'nswe'})])  # Remove the borders
 
 canvas = tk.Canvas(window, height=100, width=100)
@@ -431,6 +432,7 @@ btn_edit.place(x=250, y=10)
 
 def save_database():
     databin.write_to_binary(df, '../Data/data')
+    showinfo("Успешно!", "База данных сохранена!")
 
 
 btn_save = tk.Button(window, width=10, text='Save', command=save_database, activebackground='#76b900',
@@ -445,7 +447,7 @@ def restore_database():
     df.index = ([(x, y) for x, y in zip(df['Название'], df['Конфигурация памяти, ГБ'])])
     df.index = pd.MultiIndex.from_tuples(df.index)
     update_table()
-
+    showinfo("Успешно!", "База данных восстановлена!")
 
 btn_restore = tk.Button(window, width=10, text='Restore', command=restore_database, activebackground='#76b900',
                         activeforeground='#1A1918',
@@ -486,6 +488,7 @@ def report():
     file.write('Среднее значение 3DMark Fire Strike: ' + str(firestrike_avg) + '\n')
     file.write('Дисперсия 3DMark Fire Strike: ' + str(firestrike_disp) + '\n')
     file.close()
+    showinfo("Успешно!", "Отчёт сохранён в папке Output!")
 
 
 btn_report = tk.Button(window, width=10, text='Report', command=report, activebackground='#76b900',
