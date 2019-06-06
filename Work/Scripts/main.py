@@ -341,7 +341,7 @@ def update_table(*args):
     tree.tag_configure('mytag', background='#76B900')
     # vsb.grid(row=1, column=5, sticky='nswe')
     # hsb.grid(row=2, columnspan=10, sticky='nswe')
-    vsb.place(x=1450, y=50, height=324)
+    vsb.place(x=1450, y=57, height=324)
     # hsb.place(x=10, y=400)
     # tree.grid(row=1, column=0, columnspan=30, in_=container)
 
