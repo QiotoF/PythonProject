@@ -341,12 +341,12 @@ def update_table(*args):
     tree.tag_configure('mytag', background='#bef574')
     # vsb.grid(row=1, column=5, sticky='nswe')
     # hsb.grid(row=2, columnspan=10, sticky='nswe')
-    vsb.place(x=1450, y=57, height=324)
+    vsb.place(x=1450, y=58, height=324)
     # hsb.place(x=10, y=400)
     # tree.grid(row=1, column=0, columnspan=30, in_=container)
 
     # tree.grid(row=1, columnspan=4, sticky='WN')
-    tree.place(x=720, y=220, anchor='center')
+    tree.place(x=728, y=220, anchor='center')
 
 
 def new_tree(col, l):
@@ -397,7 +397,7 @@ except:
 OPTIONS = [0, 1, 2, 3, 4, 5]
 
 window = tk.Tk()
-window.geometry('1500x435')
+window.geometry('1478x395')
 window.resizable(0, 0)
 window.title("База данных видеокарт NVIDIA")
 window.iconbitmap('../Graphics/icon.ico')
@@ -450,6 +450,7 @@ def restore_database():
     df.index = pd.MultiIndex.from_tuples(df.index)
     update_table()
     showinfo("Успешно!", "База данных восстановлена!")
+
 
 btn_restore = tk.Button(window, width=10, text='Restore', command=restore_database, activebackground='#76b900',
                         activeforeground='#1A1918',
