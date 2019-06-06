@@ -397,7 +397,7 @@ except:
 OPTIONS = [0, 1, 2, 3, 4, 5]
 
 window = tk.Tk()
-window.geometry('1500x500')
+window.geometry('1500x435')
 window.resizable(0, 0)
 style = ttk.Style()
 style.configure("mystyle.Treeview", highlightthickness=0, bd=0, font=('Calibri', 11))  # Modify the font of the body
