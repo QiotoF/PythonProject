@@ -399,6 +399,8 @@ OPTIONS = [0, 1, 2, 3, 4, 5]
 window = tk.Tk()
 window.geometry('1500x435')
 window.resizable(0, 0)
+window.title("База данных видеокарт NVIDIA")
+window.iconbitmap('../Graphics/icon.ico')
 style = ttk.Style()
 style.configure("mystyle.Treeview", highlightthickness=0, bd=0, font=('Calibri', 11))  # Modify the font of the body
 style.configure("mystyle.Treeview.Heading", font=('Calibri', 12, 'bold'),
