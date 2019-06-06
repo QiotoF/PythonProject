@@ -524,7 +524,7 @@ selected_database = IntVar(window)
 selected_database.set(OPTIONS[1])
 options_menu = ttk.OptionMenu(window, selected_database, *OPTIONS)
 # options_menu.grid(row=0, column=5, sticky='NW')
-options_menu.place(x=735, y=15)
+options_menu.place(x=910, y=15)
 selected_database.trace('w', update_table)
 update_table()
 
