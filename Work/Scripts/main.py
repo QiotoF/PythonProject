@@ -63,31 +63,44 @@ def open_edit_window():
                 entry_rtx.get(),
                 entry_freq.get()
             ]
-            entry = dict(zip([x for x in keys], [y for y in values]))
-            df.loc[(entry['Название'], int(entry['Конфигурация памяти, ГБ'])), list(df.columns)] = [entry[x] for x in
-                                                                                                    df.columns]
+            if "" in values:
+                showinfo("Провал!", "Заполнены не все поля!")
+            else:
+                entry = dict(zip([x for x in keys], [y for y in values]))
+                df.loc[(entry['Название'], int(entry['Конфигурация памяти, ГБ'])), list(df.columns)] = [entry[x] for x in
+                                                                                                        df.columns]
         elif selected_database.get() == 2:
             values = [entry_name.get(), entry_arch.get()]
-            for index in df.index:
-                if df.loc[index]['Название'] == key:
-                    df.loc[index, 'Архитектура'] = values[1]
+            if "" in values:
+                showinfo("Провал!", "Заполнены не все поля!")
+            else:
+                for index in df.index:
+                    if df.loc[index]['Название'] == key:
+                        df.loc[index, 'Архитектура'] = values[1]
         elif selected_database.get() == 3:
             values = [entry_name.get(), entry_sli.get()]
-            for index in df.index:
-                if df.loc[index]['Название'] == key:
-                    df.loc[index, 'NVIDIA SLI'] = values[1]
+            if "" in values:
+                showinfo("Провал!", "Заполнены не все поля!")
+            else:
+                for index in df.index:
+                    if df.loc[index]['Название'] == key:
+                        df.loc[index, 'NVIDIA SLI'] = values[1]
         elif selected_database.get() == 4:
-            # keys = ['Название', 'Архитектура']
             values = [entry_name.get(), entry_rtx.get()]
-            for index in df.index:
-                if df.loc[index]['Название'] == key:
-                    df.loc[index, 'RTX'] = values[1]
+            if "" in values:
+                showinfo("Провал!", "Заполнены не все поля!")
+            else:
+                for index in df.index:
+                    if df.loc[index]['Название'] == key:
+                        df.loc[index, 'RTX'] = values[1]
         elif selected_database.get() == 5:
-            # keys = ['Название', 'Архитектура']
             values = [entry_name.get(), entry_freq.get()]
-            for index in df.index:
-                if df.loc[index]['Название'] == key:
-                    df.loc[index, 'Базовая тактовая частота, МГц'] = values[1]
+            if "" in values:
+                showinfo("Провал!", "Заполнены не все поля!")
+            else:
+                for index in df.index:
+                    if df.loc[index]['Название'] == key:
+                        df.loc[index, 'Базовая тактовая частота, МГц'] = values[1]
 
         update_table()
         window_edit.destroy()
@@ -244,11 +257,14 @@ def open_new_window():
             entry_rtx.get(),
             entry_freq.get()
         ]
-        entry = dict(zip([x for x in keys], [y for y in values]))
-        df.loc[(entry['Название'], int(entry['Конфигурация памяти, ГБ'])), list(df.columns)] = [entry[x] for x in
-                                                                                                df.columns]
-        update_table()
-        window_new.destroy()
+        if "" in values:
+            showinfo("Провал!", "Заполнены не все поля!")
+        else:
+            entry = dict(zip([x for x in keys], [y for y in values]))
+            df.loc[(entry['Название'], int(entry['Конфигурация памяти, ГБ'])), list(df.columns)] = [entry[x] for x in
+                                                                                                    df.columns]
+            update_table()
+            window_new.destroy()
 
     window_new = tk.Toplevel(window)
     window_new.resizable(0, 0)
