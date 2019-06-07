@@ -13,6 +13,7 @@ from tkinter import IntVar
 from tkinter.messagebox import showinfo
 import pandas as pd
 import numpy as np
+from params import *
 
 sys.path.append('../Library/')
 import databin
@@ -67,7 +68,8 @@ def open_edit_window():
                 showinfo("Провал!", "Заполнены не все поля!")
             else:
                 entry = dict(zip([x for x in keys], [y for y in values]))
-                df.loc[(entry['Название'], int(entry['Конфигурация памяти, ГБ'])), list(df.columns)] = [entry[x] for x in
+                df.loc[(entry['Название'], int(entry['Конфигурация памяти, ГБ'])), list(df.columns)] = [entry[x] for x
+                                                                                                        in
                                                                                                         df.columns]
         elif selected_database.get() == 2:
             values = [entry_name.get(), entry_arch.get()]
@@ -471,10 +473,10 @@ except:
 OPTIONS = [0, 1, 2, 3, 4, 5]
 
 window = tk.Tk()
-window.geometry('1478x395')
+window.geometry(MAIN_WINDOW_GEOMETRY)
 window.resizable(0, 0)
-window.title("База данных видеокарт NVIDIA")
-window.iconbitmap('../Graphics/icon.ico')
+window.title(MAIN_WINDOW_TITLE)
+window.iconbitmap(MAIN_WINDOW_ICO)
 style = ttk.Style()
 style.configure("mystyle.Treeview", highlightthickness=0, bd=0, font=('Calibri', 11))  # Modify the font of the body
 style.configure("mystyle.Treeview.Heading", font=('Calibri', 12, 'bold'),
@@ -482,41 +484,39 @@ style.configure("mystyle.Treeview.Heading", font=('Calibri', 12, 'bold'),
 style.layout("mystyle.Treeview", [('mystyle.Treeview.treearea', {'sticky': 'nswe'})])  # Remove the borders
 
 canvas = tk.Canvas(window, height=100, width=100)
-background_image = tk.PhotoImage(file='../Graphics/background.png')
+background_image = tk.PhotoImage(file=BACKGROUND_IMAGE)
 background_label = tk.Label(window, image=background_image)
 background_label.image = background_image
 background_label.place(x=0, y=0, relwidth=1, relheight=1)
-# canvas.grid(row=0, column=0, columnspan=2)
 canvas.place()
 
-btn_new = tk.Button(window, width=13, text='Добавить', command=open_new_window, activebackground='#76b900',
-                    activeforeground='#1A1918',
+btn_new = tk.Button(window, width=BUTTON_WIDTH, text='Добавить', command=open_new_window, activebackground='#76b900',
+                    activeforeground=BUTTON_ACTIVE_FOREGROUND,
                     bg='#1A1918', fg='#76b900', font=('Roboto', 12, 'bold'))
-# btn_new.grid(row=0, column=0, sticky='WN', padx=5, pady=5)
 btn_new.place(x=10, y=10)
-btn_delete = tk.Button(window, width=13, text='Удалить', command=delete_entries, activebackground='#76b900',
-                       activeforeground='#1A1918',
+btn_delete = tk.Button(window, width=BUTTON_WIDTH, text='Удалить', command=delete_entries, activebackground='#76b900',
+                       activeforeground=BUTTON_ACTIVE_FOREGROUND,
                        bg='#1A1918', fg='#76b900', font=('Roboto', 12, 'bold'))
-# btn_delete.grid(row=0, column=1, sticky='WN', pady=5)
 btn_delete.place(x=160, y=10)
-btn_edit = tk.Button(window, width=13, text='Редактировать', command=open_edit_window, activebackground='#76b900',
-                     activeforeground='#1A1918',
+btn_edit = tk.Button(window, width=BUTTON_WIDTH, text='Редактировать', command=open_edit_window,
+                     activebackground='#76b900',
+                     activeforeground=BUTTON_ACTIVE_FOREGROUND,
                      bg='#1A1918', fg='#76b900', font=('Roboto', 12, 'bold'))
-# btn_edit.grid(row=0, column=2, sticky='WN', padx=5, pady=5)
 btn_edit.place(x=310, y=10)
 
-btn_save = tk.Button(window, width=13, text='Сохранить', command=save_database, activebackground='#76b900',
-                     activeforeground='#1A1918',
+btn_save = tk.Button(window, width=BUTTON_WIDTH, text='Сохранить', command=save_database, activebackground='#76b900',
+                     activeforeground=BUTTON_ACTIVE_FOREGROUND,
                      bg='#1A1918', fg='#76b900', font=('Roboto', 12, 'bold'))
 btn_save.place(x=460, y=10)
 
-btn_restore = tk.Button(window, width=13, text='Восстановить', command=restore_database, activebackground='#76b900',
-                        activeforeground='#1A1918',
+btn_restore = tk.Button(window, width=BUTTON_WIDTH, text='Восстановить', command=restore_database,
+                        activebackground='#76b900',
+                        activeforeground=BUTTON_ACTIVE_FOREGROUND,
                         bg='#1A1918', fg='#76b900', font=('Roboto', 12, 'bold'))
 btn_restore.place(x=610, y=10)
 
-btn_report = tk.Button(window, width=13, text='Отчет', command=report, activebackground='#76b900',
-                       activeforeground='#1A1918',
+btn_report = tk.Button(window, width=BUTTON_WIDTH, text='Отчет', command=report, activebackground='#76b900',
+                       activeforeground=BUTTON_ACTIVE_FOREGROUND,
                        bg='#1A1918', fg='#76b900', font=('Roboto', 12, 'bold'))
 btn_report.place(x=760, y=10)
 
@@ -524,13 +524,6 @@ scrollbar_style = ttk.Style()
 scrollbar_style.configure("My.Horizontal.TScrollbar", troughcolor="red")
 
 tree = ttk.Treeview(window, show='headings')
-vsb = ttk.Scrollbar(orient="vertical",
-                    command=tree.yview)
-hsb = ttk.Scrollbar(orient="horizontal",
-                    command=tree.xview, style="My.Horizontal.TScrollbar")
-tree.configure(yscrollcommand=vsb.set,
-               xscrollcommand=hsb.set)
-tree.tag_configure('f', background='black')
 
 selected_database = IntVar(window)
 selected_database.set(OPTIONS[1])
