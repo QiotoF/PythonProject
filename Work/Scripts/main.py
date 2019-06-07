@@ -364,30 +364,33 @@ def new_tree(col, l):
 def delete_entries():
     global df
     entries = tree.selection()
-    if selected_database.get() == 1:
-        for x in entries:
-            if '{' in x:
-                y = x.split('}')
-                k1 = y[0][1:]
-                x2 = y[1].split(' ')
-                k2 = int(float(x2[2]))
-            else:
-                y = x.split(' ')
-                k1 = y[0]
-                k2 = y[2]
-            print(k1, k2)
-            df = df.drop((k1, int(k2)))
-    else:
-        for x in entries:
-            if '{' in x:
-                key = x.split('}')[0][1:]
+    if len(entries) != 0:
+        if selected_database.get() == 1:
+            for x in entries:
+                if '{' in x:
+                    y = x.split('}')
+                    k1 = y[0][1:]
+                    x2 = y[1].split(' ')
+                    k2 = int(float(x2[2]))
+                else:
+                    y = x.split(' ')
+                    k1 = y[0]
+                    k2 = y[2]
+                print(k1, k2)
+                df = df.drop((k1, int(k2)))
+        else:
+            for x in entries:
+                if '{' in x:
+                    key = x.split('}')[0][1:]
 
-            else:
-                key = x.split(' ')[0]
-            for index in df.index:
-                if df.loc[index]['Название'] == key:
-                    df = df.drop(index)
-    update_table()
+                else:
+                    key = x.split(' ')[0]
+                for index in df.index:
+                    if df.loc[index]['Название'] == key:
+                        df = df.drop(index)
+        update_table()
+    else:
+        showinfo("Провал!", "Не выбрана ни одна запись!")
 
 
 def save_database():
