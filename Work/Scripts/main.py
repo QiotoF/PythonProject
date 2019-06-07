@@ -397,7 +397,6 @@ def delete_entries():
                     y = x.split(' ')
                     k1 = y[0]
                     k2 = y[2]
-                print(k1, k2)
                 df = df.drop((k1, int(k2)))
         else:
             for x in entries:
