@@ -94,6 +94,7 @@ def open_edit_window():
 
     entry = tree.focus()
     window_edit = tk.Toplevel(window)
+    window_edit.resizable(0, 0)
 
     if selected_database.get() == 1:
         if '{' in entry:
@@ -247,6 +248,7 @@ def open_new_window():
         window_new.destroy()
 
     window_new = tk.Toplevel(window)
+    window_new.resizable(0, 0)
     tk.Label(window_new, text='Новая запись в базе данных').grid(row=0, columnspan=2)
     tk.Label(window_new, text='Имя:').grid(row=1, column=0)
     tk.Label(window_new, text='Дата выхода:').grid(row=2, column=0)
@@ -388,6 +390,56 @@ def delete_entries():
     update_table()
 
 
+def save_database():
+    databin.write_to_binary(df, '../Data/data')
+    showinfo("Успешно!", "База данных сохранена!")
+
+
+def restore_database():
+    global df
+    df = pd.read_csv('../Data/bd.csv')
+    df.index = ([(x, y) for x, y in zip(df['Название'], df['Конфигурация памяти, ГБ'])])
+    df.index = pd.MultiIndex.from_tuples(df.index)
+    update_table()
+    showinfo("Успешно!", "База данных восстановлена!")
+
+
+def report():
+    entries_count = len(df.index)
+    memory_avg = round(np.average(df['Конфигурация памяти, ГБ']), 2)
+    memory_disp = round(np.var(df['Конфигурация памяти, ГБ']), 2)
+    power_avg = round(np.average(df['Энергопотребление, Вт']), 2)
+    power_disp = round(np.var(df['Энергопотребление, Вт']), 2)
+    farcry5_avg = round(np.average(df['Far Cry 5, FPS']), 2)
+    farcry5_disp = round(np.var(df['Far Cry 5, FPS']), 2)
+    fallout4_avg = round(np.average(df['Fallout 4, FPS']), 2)
+    fallout4_disp = round(np.var(df['Fallout 4, FPS']), 2)
+    witcher3_avg = round(np.average(df['The Witcher 3, FPS']), 2)
+    witcher3_disp = round(np.var(df['The Witcher 3, FPS']), 2)
+    cloudgate_avg = round(np.average(df['3DMark Cloud Gate']), 2)
+    cloudgate_disp = round(np.var(df['3DMark Cloud Gate']), 2)
+    firestrike_avg = round(np.average(df['3DMark Fire Strike']), 2)
+    firestrike_disp = round(np.var(df['3DMark Fire Strike']), 2)
+    file = open('../Output/output.txt', 'w')
+    file.write('Количество записей: ' + str(entries_count) + '\n')
+    file.write('Среднее значение памяти: ' + str(memory_avg) + '\n')
+    file.write('Дисперсия памяти: ' + str(memory_disp) + '\n')
+    file.write('Среднее значение энергопотребления: ' + str(power_avg) + '\n')
+    file.write('Дисперсия энергопотребления: ' + str(power_disp) + '\n')
+    file.write('Среднее значение FPS в Far Cry 5: ' + str(farcry5_avg) + '\n')
+    file.write('Дисперсия FPS в Far Cry 5: ' + str(farcry5_disp) + '\n')
+    file.write('Среднее значение FPS в Fallout 4: ' + str(fallout4_avg) + '\n')
+    file.write('Дисперсия FPS в Fallout 4: ' + str(fallout4_disp) + '\n')
+    file.write('Среднее значение FPS в The Witcher 3: ' + str(witcher3_avg) + '\n')
+    file.write('Дисперсия FPS в The Witcher 3: ' + str(witcher3_disp) + '\n')
+    file.write('Среднее значение 3DMark Cloud Gate: ' + str(cloudgate_avg) + '\n')
+    file.write('Дисперсия 3DMark Cloud Gate: ' + str(cloudgate_disp) + '\n')
+    file.write('Среднее значение 3DMark Fire Strike: ' + str(firestrike_avg) + '\n')
+    file.write('Дисперсия 3DMark Fire Strike: ' + str(firestrike_disp) + '\n')
+    file.close()
+    showinfo("Успешно!", "Отчёт сохранён в папке Output!")
+
+
 try:
     df = databin.read_from_binary('../Data/data')
 except:
@@ -431,76 +483,20 @@ btn_edit = tk.Button(window, width=13, text='Редактировать', comman
 # btn_edit.grid(row=0, column=2, sticky='WN', padx=5, pady=5)
 btn_edit.place(x=310, y=10)
 
-
-def save_database():
-    databin.write_to_binary(df, '../Data/data')
-    showinfo("Успешно!", "База данных сохранена!")
-
-
 btn_save = tk.Button(window, width=13, text='Сохранить', command=save_database, activebackground='#76b900',
                      activeforeground='#1A1918',
                      bg='#1A1918', fg='#76b900', font=('Roboto', 12, 'bold'))
 btn_save.place(x=460, y=10)
-
-
-def restore_database():
-    global df
-    df = pd.read_csv('../Data/bd.csv')
-    df.index = ([(x, y) for x, y in zip(df['Название'], df['Конфигурация памяти, ГБ'])])
-    df.index = pd.MultiIndex.from_tuples(df.index)
-    update_table()
-    showinfo("Успешно!", "База данных восстановлена!")
-
 
 btn_restore = tk.Button(window, width=13, text='Восстановить', command=restore_database, activebackground='#76b900',
                         activeforeground='#1A1918',
                         bg='#1A1918', fg='#76b900', font=('Roboto', 12, 'bold'))
 btn_restore.place(x=610, y=10)
 
-
-def report():
-    entries_count = len(df.index)
-    memory_avg = round(np.average(df['Конфигурация памяти, ГБ']), 2)
-    memory_disp = round(np.var(df['Конфигурация памяти, ГБ']), 2)
-    power_avg = round(np.average(df['Энергопотребление, Вт']), 2)
-    power_disp = round(np.var(df['Энергопотребление, Вт']), 2)
-    farcry5_avg = round(np.average(df['Far Cry 5, FPS']), 2)
-    farcry5_disp = round(np.var(df['Far Cry 5, FPS']), 2)
-    fallout4_avg = round(np.average(df['Fallout 4, FPS']), 2)
-    fallout4_disp = round(np.var(df['Fallout 4, FPS']), 2)
-    witcher3_avg = round(np.average(df['The Witcher 3, FPS']), 2)
-    witcher3_disp = round(np.var(df['The Witcher 3, FPS']), 2)
-    cloudgate_avg = round(np.average(df['3DMark Cloud Gate']), 2)
-    cloudgate_disp = round(np.var(df['3DMark Cloud Gate']), 2)
-    firestrike_avg = round(np.average(df['3DMark Fire Strike']), 2)
-    firestrike_disp = round(np.var(df['3DMark Fire Strike']), 2)
-    file = open('../Output/output.txt', 'w')
-    file.write('Количество записей: ' + str(entries_count) + '\n')
-    file.write('Среднее значение памяти: ' + str(memory_avg) + '\n')
-    file.write('Дисперсия памяти: ' + str(memory_disp) + '\n')
-    file.write('Среднее значение энергопотребления: ' + str(power_avg) + '\n')
-    file.write('Дисперсия энергопотребления: ' + str(power_disp) + '\n')
-    file.write('Среднее значение FPS в Far Cry 5: ' + str(farcry5_avg) + '\n')
-    file.write('Дисперсия FPS в Far Cry 5: ' + str(farcry5_disp) + '\n')
-    file.write('Среднее значение FPS в Fallout 4: ' + str(fallout4_avg) + '\n')
-    file.write('Дисперсия FPS в Fallout 4: ' + str(fallout4_disp) + '\n')
-    file.write('Среднее значение FPS в The Witcher 3: ' + str(witcher3_avg) + '\n')
-    file.write('Дисперсия FPS в The Witcher 3: ' + str(witcher3_disp) + '\n')
-    file.write('Среднее значение 3DMark Cloud Gate: ' + str(cloudgate_avg) + '\n')
-    file.write('Дисперсия 3DMark Cloud Gate: ' + str(cloudgate_disp) + '\n')
-    file.write('Среднее значение 3DMark Fire Strike: ' + str(firestrike_avg) + '\n')
-    file.write('Дисперсия 3DMark Fire Strike: ' + str(firestrike_disp) + '\n')
-    file.close()
-    showinfo("Успешно!", "Отчёт сохранён в папке Output!")
-
-
 btn_report = tk.Button(window, width=13, text='Отчет', command=report, activebackground='#76b900',
                        activeforeground='#1A1918',
                        bg='#1A1918', fg='#76b900', font=('Roboto', 12, 'bold'))
 btn_report.place(x=760, y=10)
-
-# container = ttk.Frame()
-# container.grid(row=1, columnspan=4)
 
 scrollbar_style = ttk.Style()
 scrollbar_style.configure("My.Horizontal.TScrollbar", troughcolor="red")
@@ -508,22 +504,15 @@ scrollbar_style.configure("My.Horizontal.TScrollbar", troughcolor="red")
 tree = ttk.Treeview(window, show='headings')
 vsb = ttk.Scrollbar(orient="vertical",
                     command=tree.yview)
-# vsb.configure(bg='blue')
 hsb = ttk.Scrollbar(orient="horizontal",
                     command=tree.xview, style="My.Horizontal.TScrollbar")
 tree.configure(yscrollcommand=vsb.set,
                xscrollcommand=hsb.set)
 tree.tag_configure('f', background='black')
-# vsb.grid(row=1, column=5, sticky='nswe')
-# hsb.grid(row=2, columnspan=10, sticky='nswe')
-# vsb.place(x=400, y=10)
-# hsb.place(x=10, y=400)
-# tree.grid(row=1, column=0, columnspan=30)
 
 selected_database = IntVar(window)
 selected_database.set(OPTIONS[1])
 options_menu = ttk.OptionMenu(window, selected_database, *OPTIONS)
-# options_menu.grid(row=0, column=5, sticky='NW')
 options_menu.place(x=910, y=15)
 selected_database.trace('w', update_table)
 update_table()
