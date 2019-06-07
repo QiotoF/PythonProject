@@ -4,8 +4,47 @@ Created on Fri Jun  7 22:56:51 2019
 
 @author: QiotoF
 """
-import numpy as np
 from tkinter.messagebox import showinfo
+import matplotlib.pyplot as plt
+import pylab as plb
+import numpy as np
+
+power = 'Энергопотребление, Вт'
+arch = 'Архитектура'
+
+
+def bar_plot(df):
+    plt.figure(figsize=(20, 5))
+    plb.bar(df.loc[:, 'Название'], df.loc[:, power], align='center', label=power)
+    plb.legend()
+    plt.ylabel(power)
+    plt.savefig('../Output/Столбчатая диаграмма.png')
+
+
+def hist_plot(df):
+    plt.figure(figsize=(20, 5))
+    d = df.loc[:, power]
+    d.hist(bins=50)
+    plt.ylabel('Количетво')
+    plt.xlabel(power)
+    plb.savefig('../Output/Гистограмма.png')
+
+
+def box_plot(df):
+    plt.figure(figsize=(20, 5))
+    d = df.loc[:, power]
+    plt.boxplot(d, notch=True, patch_artist=True)
+    plt.ylabel(power)
+    plb.savefig('../Output/Диаграмма Бокса-Вискерса.png')
+
+
+def scatter_plot(df):
+    area = np.pi * 3
+    plt.figure(figsize=(10, 5))
+    plt.scatter(df.loc[:, 'Конфигурация памяти, ГБ'], df.loc[:, 'Fallout 4, FPS'], s=area)
+    plt.ylabel('Fallout 4, FPS')
+    plt.xlabel('Конфигурация памяти, ГБ')
+    plb.savefig('../Output/Диаграмма рассеивания.png')
 
 
 def report(df):
@@ -41,4 +80,10 @@ def report(df):
     file.write('Среднее значение 3DMark Fire Strike: ' + str(firestrike_avg) + '\n')
     file.write('Дисперсия 3DMark Fire Strike: ' + str(firestrike_disp) + '\n')
     file.close()
+    bar_plot(df)
+    hist_plot(df)
+    box_plot(df)
+    scatter_plot(df)
     showinfo("Успешно!", "Отчёт сохранён в папке Output!")
+
+

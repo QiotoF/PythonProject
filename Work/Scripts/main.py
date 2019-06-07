@@ -12,7 +12,7 @@ import tkinter.ttk as ttk
 from tkinter import IntVar
 from tkinter.messagebox import showinfo
 import pandas as pd
-import numpy as np
+
 from params import *
 from reportmodule import *
 
@@ -366,7 +366,7 @@ def update_table(*args):
     # vsb.grid(row=1, column=5, sticky='nswe')
     # hsb.grid(row=2, columnspan=10, sticky='nswe')
     vsb.place(x=1450, y=58, height=324)
-    # hsb.place(x=10, y=400)
+    # hsb.place(power=10, arch=400)
     # tree.grid(row=1, column=0, columnspan=30, in_=container)
 
     # tree.grid(row=1, columnspan=4, sticky='WN')
@@ -426,6 +426,9 @@ def restore_database():
     df.index = pd.MultiIndex.from_tuples(df.index)
     update_table()
     showinfo("Успешно!", "База данных восстановлена!")
+
+
+
 
 
 try:
