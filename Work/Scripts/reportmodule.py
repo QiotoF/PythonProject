@@ -1,6 +1,5 @@
 from tkinter.messagebox import showinfo
 import matplotlib.pyplot as plt
-import pylab as plb
 import numpy as np
 from params import *
 
@@ -15,8 +14,8 @@ def bar_plot(df):
     Автор: Фурса Д.Д.
     """
     plt.figure(figsize=(20, 5))
-    plb.bar(df.loc[:, 'Название'], df.loc[:, power], align='center', label=power)
-    plb.legend()
+    plt.bar(df.loc[:, 'Название'], df.loc[:, power], align='center', label=power)
+    plt.legend()
     plt.ylabel(power)
     plt.savefig(BAR_PLOT_ADDRESS)
 
@@ -32,7 +31,7 @@ def hist_plot(df):
     d.hist(bins=50)
     plt.ylabel('Количетво')
     plt.xlabel(power)
-    plb.savefig(HIST_PLOT_ADDRESS)
+    plt.savefig(HIST_PLOT_ADDRESS)
 
 
 def box_plot(df):
@@ -45,7 +44,7 @@ def box_plot(df):
     d = df.loc[:, power]
     plt.boxplot(d, notch=True, patch_artist=True)
     plt.ylabel(power)
-    plb.savefig(BOX_PLOT_ADDRESS)
+    plt.savefig(BOX_PLOT_ADDRESS)
 
 
 def scatter_plot(df):
@@ -59,7 +58,7 @@ def scatter_plot(df):
     plt.scatter(df.loc[:, 'Конфигурация памяти, ГБ'], df.loc[:, 'Fallout 4, FPS'], s=area)
     plt.ylabel('Fallout 4, FPS')
     plt.xlabel('Конфигурация памяти, ГБ')
-    plb.savefig(SCATTER_PLOT_ADDRESS)
+    plt.savefig(SCATTER_PLOT_ADDRESS)
 
 
 def report(df):
