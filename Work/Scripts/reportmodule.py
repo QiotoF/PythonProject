@@ -8,7 +8,7 @@ from tkinter.messagebox import showinfo
 import matplotlib.pyplot as plt
 import pylab as plb
 import numpy as np
-
+from params import *
 power = 'Энергопотребление, Вт'
 arch = 'Архитектура'
 
@@ -18,7 +18,7 @@ def bar_plot(df):
     plb.bar(df.loc[:, 'Название'], df.loc[:, power], align='center', label=power)
     plb.legend()
     plt.ylabel(power)
-    plt.savefig('../Output/Столбчатая диаграмма.png')
+    plt.savefig(BAR_PLOT_ADDRESS)
 
 
 def hist_plot(df):
@@ -27,7 +27,7 @@ def hist_plot(df):
     d.hist(bins=50)
     plt.ylabel('Количетво')
     plt.xlabel(power)
-    plb.savefig('../Output/Гистограмма.png')
+    plb.savefig(HIST_PLOT_ADDRESS)
 
 
 def box_plot(df):
@@ -35,7 +35,7 @@ def box_plot(df):
     d = df.loc[:, power]
     plt.boxplot(d, notch=True, patch_artist=True)
     plt.ylabel(power)
-    plb.savefig('../Output/Диаграмма Бокса-Вискерса.png')
+    plb.savefig(BOX_PLOT_ADDRESS)
 
 
 def scatter_plot(df):
@@ -44,7 +44,7 @@ def scatter_plot(df):
     plt.scatter(df.loc[:, 'Конфигурация памяти, ГБ'], df.loc[:, 'Fallout 4, FPS'], s=area)
     plt.ylabel('Fallout 4, FPS')
     plt.xlabel('Конфигурация памяти, ГБ')
-    plb.savefig('../Output/Диаграмма рассеивания.png')
+    plb.savefig(SCATTER_PLOT_ADDRESS)
 
 
 def report(df):
@@ -63,7 +63,7 @@ def report(df):
     cloudgate_disp = round(np.var(df['3DMark Cloud Gate']), 2)
     firestrike_avg = round(np.average(df['3DMark Fire Strike']), 2)
     firestrike_disp = round(np.var(df['3DMark Fire Strike']), 2)
-    file = open('../Output/output.txt', 'w')
+    file = open(TEXT_REPORT_ADDRESS, 'w')
     file.write('Количество записей: ' + str(entries_count) + '\n')
     file.write('Среднее значение памяти: ' + str(memory_avg) + '\n')
     file.write('Дисперсия памяти: ' + str(memory_disp) + '\n')

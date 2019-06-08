@@ -415,13 +415,13 @@ def delete_entries():
 
 
 def save_database():
-    databin.write_to_binary(df, '../Data/data')
+    databin.write_to_binary(df,DATA_SAVE_ADDRESS)
     showinfo("Успешно!", "База данных сохранена!")
 
 
 def restore_database():
     global df
-    df = pd.read_csv('../Data/bd.csv')
+    df = pd.read_csv(READ_ADDRESS)
     df.index = ([(x, y) for x, y in zip(df['Название'], df['Конфигурация памяти, ГБ'])])
     df.index = pd.MultiIndex.from_tuples(df.index)
     update_table()
@@ -432,9 +432,9 @@ def restore_database():
 
 
 try:
-    df = databin.read_from_binary('../Data/data')
+    df = databin.read_from_binary(DATA_SAVE_ADDRESS)
 except:
-    df = pd.read_csv('../Data/bd.csv')
+    df = pd.read_csv(READ_ADDRESS)
     df.index = ([(x, y) for x, y in zip(df['Название'], df['Конфигурация памяти, ГБ'])])
     df.index = pd.MultiIndex.from_tuples(df.index)
 OPTIONS = [0, 1, 2, 3, 4, 5]
@@ -457,34 +457,34 @@ background_label.image = background_image
 background_label.place(x=0, y=0, relwidth=1, relheight=1)
 canvas.place()
 
-btn_new = tk.Button(window, width=BUTTON_WIDTH, text='Добавить', command=open_new_window, activebackground='#76b900',
+btn_new = tk.Button(window, width=BUTTON_WIDTH, text='Добавить', command=open_new_window, activebackground=FOREGROUNG_COLOUR,
                     activeforeground=BUTTON_ACTIVE_FOREGROUND,
-                    bg='#1A1918', fg='#76b900', font=('Roboto', 12, 'bold'))
+                    bg=BACKGROUND_COLOUR, fg=FOREGROUNG_COLOUR, font=TEXT_OPTIONS)
 btn_new.place(x=10, y=10)
-btn_delete = tk.Button(window, width=BUTTON_WIDTH, text='Удалить', command=delete_entries, activebackground='#76b900',
+btn_delete = tk.Button(window, width=BUTTON_WIDTH, text='Удалить', command=delete_entries, activebackground=FOREGROUNG_COLOUR,
                        activeforeground=BUTTON_ACTIVE_FOREGROUND,
-                       bg='#1A1918', fg='#76b900', font=('Roboto', 12, 'bold'))
+                       bg=BACKGROUND_COLOUR, fg=FOREGROUNG_COLOUR, font=TEXT_OPTIONS)
 btn_delete.place(x=160, y=10)
 btn_edit = tk.Button(window, width=BUTTON_WIDTH, text='Редактировать', command=open_edit_window,
-                     activebackground='#76b900',
+                     activebackground=FOREGROUNG_COLOUR,
                      activeforeground=BUTTON_ACTIVE_FOREGROUND,
-                     bg='#1A1918', fg='#76b900', font=('Roboto', 12, 'bold'))
+                     bg=BACKGROUND_COLOUR, fg=FOREGROUNG_COLOUR, font=TEXT_OPTIONS)
 btn_edit.place(x=310, y=10)
 
-btn_save = tk.Button(window, width=BUTTON_WIDTH, text='Сохранить', command=save_database, activebackground='#76b900',
+btn_save = tk.Button(window, width=BUTTON_WIDTH, text='Сохранить', command=save_database, activebackground=FOREGROUNG_COLOUR,
                      activeforeground=BUTTON_ACTIVE_FOREGROUND,
-                     bg='#1A1918', fg='#76b900', font=('Roboto', 12, 'bold'))
+                     bg=BACKGROUND_COLOUR, fg=FOREGROUNG_COLOUR, font=TEXT_OPTIONS)
 btn_save.place(x=460, y=10)
 
 btn_restore = tk.Button(window, width=BUTTON_WIDTH, text='Восстановить', command=restore_database,
-                        activebackground='#76b900',
+                        activebackground=FOREGROUNG_COLOUR,
                         activeforeground=BUTTON_ACTIVE_FOREGROUND,
-                        bg='#1A1918', fg='#76b900', font=('Roboto', 12, 'bold'))
+                        bg=BACKGROUND_COLOUR, fg=FOREGROUNG_COLOUR, font=TEXT_OPTIONS)
 btn_restore.place(x=610, y=10)
 
-btn_report = tk.Button(window, width=BUTTON_WIDTH, text='Отчет', command=lambda: report(df), activebackground='#76b900',
+btn_report = tk.Button(window, width=BUTTON_WIDTH, text='Отчет', command=lambda: report(df), activebackground=FOREGROUNG_COLOUR,
                        activeforeground=BUTTON_ACTIVE_FOREGROUND,
-                       bg='#1A1918', fg='#76b900', font=('Roboto', 12, 'bold'))
+                       bg=BACKGROUND_COLOUR, fg=FOREGROUNG_COLOUR, font=TEXT_OPTIONS)
 btn_report.place(x=760, y=10)
 
 scrollbar_style = ttk.Style()
