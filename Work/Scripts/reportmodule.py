@@ -1,19 +1,19 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Fri Jun  7 22:56:51 2019
-
-@author: QiotoF
-"""
 from tkinter.messagebox import showinfo
 import matplotlib.pyplot as plt
 import pylab as plb
 import numpy as np
 from params import *
+
 power = 'Энергопотребление, Вт'
 arch = 'Архитектура'
 
 
 def bar_plot(df):
+    """
+    Функция для создания и сохранения столбчатой диаграммы
+    Входные параметры: df - DataFrame, по которому строится диаграмма
+    Автор: Фурса Д.Д.
+    """
     plt.figure(figsize=(20, 5))
     plb.bar(df.loc[:, 'Название'], df.loc[:, power], align='center', label=power)
     plb.legend()
@@ -22,6 +22,11 @@ def bar_plot(df):
 
 
 def hist_plot(df):
+    """
+    Функция для создания и сохранения гистограммы
+    Входные параметры: df - DataFrame, по которому строится гистограмма
+    Автор: Фурса Д.Д.
+    """
     plt.figure(figsize=(20, 5))
     d = df.loc[:, power]
     d.hist(bins=50)
@@ -31,6 +36,11 @@ def hist_plot(df):
 
 
 def box_plot(df):
+    """
+    Функция для создания и сохранения диаграммы Бокса-Вискера
+    Входные параметры: df - DataFrame, по которому строится диаграмма
+    Автор: Фурса Д.Д.
+    """
     plt.figure(figsize=(20, 5))
     d = df.loc[:, power]
     plt.boxplot(d, notch=True, patch_artist=True)
@@ -39,6 +49,11 @@ def box_plot(df):
 
 
 def scatter_plot(df):
+    """
+    Функция для создания и сохранения диаграммы рассеивания
+    Входные параметры: df - DataFrame, по которому строится диаграмма
+    Автор: Фурса Д.Д.
+    """
     area = np.pi * 3
     plt.figure(figsize=(10, 5))
     plt.scatter(df.loc[:, 'Конфигурация памяти, ГБ'], df.loc[:, 'Fallout 4, FPS'], s=area)
@@ -48,6 +63,11 @@ def scatter_plot(df):
 
 
 def report(df):
+    """
+    Функция для создания и сохранения текстового отчета и вызова функций создания графиков
+    Входные параметры: df - DataFrame, по которому создается отчет
+    Автор: Марков Д.Э.
+    """
     entries_count = len(df.index)
     memory_avg = round(np.average(df['Конфигурация памяти, ГБ']), 2)
     memory_disp = round(np.var(df['Конфигурация памяти, ГБ']), 2)
@@ -85,5 +105,3 @@ def report(df):
     box_plot(df)
     scatter_plot(df)
     showinfo("Успешно!", "Отчёт сохранён в папке Output!")
-
-

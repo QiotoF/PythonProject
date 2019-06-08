@@ -1,10 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Tue May 14 21:56:35 2019
-
-@author: QiotoF
-"""
-
 import sys
 import tkinter as tk
 import tkinter.font as tkfont
@@ -16,35 +9,47 @@ import pandas as pd
 from params import *
 from reportmodule import *
 
-sys.path.append('../Library/')
+sys.path.append(LIBRARY_PATH)
 import databin
 
 
 def sortby(tree, col, descending):
-    def sortSecond(val):
-        return val[1]
+    """
+    Функция для сортировки строк таблицы
+    Параметры: tree - TreeView, col - столбец, descending - порядок сортировки
+    Автор: Марков Д.Э.
+    """
 
     def change_numeric(data):
+        """
+        Функция для приведения элементов массива к типу int
+        Параметры: data - массив
+        Возвращает новый массив
+        Автор: Марков Д.Э.
+        """
         return [(int(x[0]), x[1]) for x in data]
 
-    """sort tree contents when a column header is clicked on"""
-    # grab values to sort
     data = [(tree.set(child, col), child) for child in tree.get_children('')]
-    # if the data to be sorted is numeric change to float
     if data[0][0].isdigit():
         data = change_numeric(data)
-    # now sort the data in place
     data.sort(reverse=descending)
     for ix, item in enumerate(data):
         tree.move(item[1], '', ix)
-    # switch the heading so it will sort in the opposite direction
     tree.heading(col, command=lambda col=col: sortby(tree, col, int(not descending)))
 
 
 def open_edit_window():
+    """
+    Функция для открытия окна редактирования
+    Автор: Марков Д.Э.
+    """
     global df
 
     def edit_entry():
+        """
+        Функция для редактирования выбранной записи базы данных
+        Автор: Марков Д.Э.
+        """
         if selected_database.get() == 1:
             keys = ['Название', 'Дата выхода', 'Конфигурация памяти, ГБ', 'Энергопотребление, Вт', 'Far Cry 5, FPS',
                     'Fallout 4, FPS', 'The Witcher 3, FPS', '3DMark Cloud Gate', '3DMark Fire Strike',
@@ -240,7 +245,16 @@ def open_edit_window():
 
 
 def open_new_window():
+    """
+    Функция для открытия окна добавления новой записи
+    Автор: Марков Д.Э.
+    """
+
     def new_entry():
+        """
+        Функция для добавления новой записи в базу данных
+        Автор: Марков Д.Э.
+        """
         keys = ['Название', 'Дата выхода', 'Конфигурация памяти, ГБ', 'Энергопотребление, Вт', 'Far Cry 5, FPS',
                 'Fallout 4, FPS', 'The Witcher 3, FPS', '3DMark Cloud Gate', '3DMark Fire Strike',
                 'Средняя цена, ₽', 'Архитектура', 'NVIDIA SLI', 'RTX', 'Базовая тактовая частота, МГц']
@@ -319,6 +333,12 @@ def open_new_window():
 
 
 def make_list(df):
+    """
+    Функция для создания массива записей базы данных
+    Параметры: df - DataFrame
+    Возвращает кортеж из массива названий столбцов и массива записей
+    Автор: Хусаенов Т.И.
+    """
     if selected_database.get() == 2:
         col = ('Название', 'Архитектура')
         s = list(set([(x, y) for x, y in zip(df['Название'], df['Архитектура'])]))
@@ -350,7 +370,11 @@ def make_list(df):
     return col, s
 
 
-def update_table(*args):
+def update_table():
+    """
+    Функция для обновления таблицы
+    Автор: Милосердов А.В.
+    """
     global tree
     tree.destroy()
     arg = make_list(df)
@@ -363,17 +387,17 @@ def update_table(*args):
     tree.configure(yscrollcommand=vsb.set,
                    xscrollcommand=hsb.set)
     tree.tag_configure('mytag', background='#bef574')
-    # vsb.grid(row=1, column=5, sticky='nswe')
-    # hsb.grid(row=2, columnspan=10, sticky='nswe')
     vsb.place(x=1450, y=58, height=324)
-    # hsb.place(power=10, arch=400)
-    # tree.grid(row=1, column=0, columnspan=30, in_=container)
-
-    # tree.grid(row=1, columnspan=4, sticky='WN')
     tree.place(x=728, y=220, anchor='center')
 
 
 def new_tree(col, l):
+    """
+    Функция для создания новой таблицы
+    Параметры: col - массив названий столбцов, l - массив записей
+    Возвращает новую таблицу
+    Автор: Хусаенов Т.И.
+    """
     tree = ttk.Treeview(window, columns=col, show='headings', height=15, style="mystyle.Treeview")
     for x in col:
         tree.column(x, width=int(tkfont.Font().measure(x) / 1.1))
@@ -384,6 +408,10 @@ def new_tree(col, l):
 
 
 def delete_entries():
+    """
+    Функция для удаления записей из базы данных
+    Автор: Милосердов А.В.
+    """
     global df
     entries = tree.selection()
     if len(entries) != 0:
@@ -415,20 +443,25 @@ def delete_entries():
 
 
 def save_database():
-    databin.write_to_binary(df,DATA_SAVE_ADDRESS)
+    """
+    Функция для сохранения базы данных
+    Автор: Хусаенов Т.И.
+    """
+    databin.write_to_binary(df, DATA_SAVE_ADDRESS)
     showinfo("Успешно!", "База данных сохранена!")
 
 
 def restore_database():
+    """
+    Функция для восстановления базы данных
+    Автор: Милосердов А.В.
+    """
     global df
     df = pd.read_csv(READ_ADDRESS)
     df.index = ([(x, y) for x, y in zip(df['Название'], df['Конфигурация памяти, ГБ'])])
     df.index = pd.MultiIndex.from_tuples(df.index)
     update_table()
     showinfo("Успешно!", "База данных восстановлена!")
-
-
-
 
 
 try:
@@ -457,11 +490,13 @@ background_label.image = background_image
 background_label.place(x=0, y=0, relwidth=1, relheight=1)
 canvas.place()
 
-btn_new = tk.Button(window, width=BUTTON_WIDTH, text='Добавить', command=open_new_window, activebackground=FOREGROUNG_COLOUR,
+btn_new = tk.Button(window, width=BUTTON_WIDTH, text='Добавить', command=open_new_window,
+                    activebackground=FOREGROUNG_COLOUR,
                     activeforeground=BUTTON_ACTIVE_FOREGROUND,
                     bg=BACKGROUND_COLOUR, fg=FOREGROUNG_COLOUR, font=TEXT_OPTIONS)
 btn_new.place(x=10, y=10)
-btn_delete = tk.Button(window, width=BUTTON_WIDTH, text='Удалить', command=delete_entries, activebackground=FOREGROUNG_COLOUR,
+btn_delete = tk.Button(window, width=BUTTON_WIDTH, text='Удалить', command=delete_entries,
+                       activebackground=FOREGROUNG_COLOUR,
                        activeforeground=BUTTON_ACTIVE_FOREGROUND,
                        bg=BACKGROUND_COLOUR, fg=FOREGROUNG_COLOUR, font=TEXT_OPTIONS)
 btn_delete.place(x=160, y=10)
@@ -471,7 +506,8 @@ btn_edit = tk.Button(window, width=BUTTON_WIDTH, text='Редактироват�
                      bg=BACKGROUND_COLOUR, fg=FOREGROUNG_COLOUR, font=TEXT_OPTIONS)
 btn_edit.place(x=310, y=10)
 
-btn_save = tk.Button(window, width=BUTTON_WIDTH, text='Сохранить', command=save_database, activebackground=FOREGROUNG_COLOUR,
+btn_save = tk.Button(window, width=BUTTON_WIDTH, text='Сохранить', command=save_database,
+                     activebackground=FOREGROUNG_COLOUR,
                      activeforeground=BUTTON_ACTIVE_FOREGROUND,
                      bg=BACKGROUND_COLOUR, fg=FOREGROUNG_COLOUR, font=TEXT_OPTIONS)
 btn_save.place(x=460, y=10)
@@ -482,7 +518,8 @@ btn_restore = tk.Button(window, width=BUTTON_WIDTH, text='Восстановит
                         bg=BACKGROUND_COLOUR, fg=FOREGROUNG_COLOUR, font=TEXT_OPTIONS)
 btn_restore.place(x=610, y=10)
 
-btn_report = tk.Button(window, width=BUTTON_WIDTH, text='Отчет', command=lambda: report(df), activebackground=FOREGROUNG_COLOUR,
+btn_report = tk.Button(window, width=BUTTON_WIDTH, text='Отчет', command=lambda: report(df),
+                       activebackground=FOREGROUNG_COLOUR,
                        activeforeground=BUTTON_ACTIVE_FOREGROUND,
                        bg=BACKGROUND_COLOUR, fg=FOREGROUNG_COLOUR, font=TEXT_OPTIONS)
 btn_report.place(x=760, y=10)
