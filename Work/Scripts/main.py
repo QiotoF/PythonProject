@@ -71,7 +71,7 @@ def open_edit_window():
                 entry_freq.get()
             ]
             if "" in values:
-                showinfo("Провал!", "Заполнены не все поля!")
+                showinfo(ERROR_MESSAGE, "Заполнены не все поля")
             else:
                 entry = dict(zip([x for x in keys], [y for y in values]))
                 df.loc[(entry['Название'], int(entry['Конфигурация памяти, ГБ'])), list(df.columns)] = [entry[x] for x
@@ -80,7 +80,7 @@ def open_edit_window():
         elif selected_database.get() == 2:
             values = [entry_name.get(), entry_arch.get()]
             if "" in values:
-                showinfo("Провал!", "Заполнены не все поля!")
+                showinfo(ERROR_MESSAGE, "Заполнены не все поля")
             else:
                 for index in df.index:
                     if df.loc[index]['Название'] == key:
@@ -88,7 +88,7 @@ def open_edit_window():
         elif selected_database.get() == 3:
             values = [entry_name.get(), entry_sli.get()]
             if "" in values:
-                showinfo("Провал!", "Заполнены не все поля!")
+                showinfo(ERROR_MESSAGE, "Заполнены не все поля")
             else:
                 for index in df.index:
                     if df.loc[index]['Название'] == key:
@@ -96,7 +96,7 @@ def open_edit_window():
         elif selected_database.get() == 4:
             values = [entry_name.get(), entry_rtx.get()]
             if "" in values:
-                showinfo("Провал!", "Заполнены не все поля!")
+                showinfo(ERROR_MESSAGE, "Заполнены не все поля")
             else:
                 for index in df.index:
                     if df.loc[index]['Название'] == key:
@@ -104,7 +104,7 @@ def open_edit_window():
         elif selected_database.get() == 5:
             values = [entry_name.get(), entry_freq.get()]
             if "" in values:
-                showinfo("Провал!", "Заполнены не все поля!")
+                showinfo(ERROR_MESSAGE, "Заполнены не все поля")
             else:
                 for index in df.index:
                     if df.loc[index]['Название'] == key:
@@ -129,7 +129,7 @@ def open_edit_window():
                 k1 = y[0]
                 k2 = y[2]
             key = (k1, int(k2))
-            tk.Label(window_edit, text='Новая запись в базе данных').grid(row=0, columnspan=2)
+            tk.Label(window_edit, text='Редактировать запись').grid(row=0, columnspan=2)
             tk.Label(window_edit, text='Имя:').grid(row=1, column=0)
             tk.Label(window_edit, text='Дата выхода:').grid(row=2, column=0)
             tk.Label(window_edit, text='Конфигурация памяти, ГБ:').grid(row=3, column=0)
@@ -241,7 +241,7 @@ def open_edit_window():
                 entry_freq.grid(row=2, column=1)
                 tk.Button(window_edit, text='Ok', command=edit_entry).grid(row=3, columnspan=2)
     else:
-        showinfo("Провал!", "Не выбрана никакая запись!")
+        showinfo(ERROR_MESSAGE, "Не выбрана никакая запись")
 
 
 def open_new_window():
@@ -275,7 +275,7 @@ def open_new_window():
             entry_freq.get()
         ]
         if "" in values:
-            showinfo("Провал!", "Заполнены не все поля!")
+            showinfo(ERROR_MESSAGE, "Заполнены не все поля")
         else:
             entry = dict(zip([x for x in keys], [y for y in values]))
             df.loc[(entry['Название'], int(entry['Конфигурация памяти, ГБ'])), list(df.columns)] = [entry[x] for x in
@@ -439,7 +439,7 @@ def delete_entries():
                         df = df.drop(index)
         update_table()
     else:
-        showinfo("Провал!", "Не выбрана ни одна запись!")
+        showinfo(ERROR_MESSAGE, "Не выбрана ни одна запись")
 
 
 def save_database():
@@ -448,7 +448,7 @@ def save_database():
     Автор: Хусаенов Т.И.
     """
     databin.write_to_binary(df, DATA_SAVE_ADDRESS)
-    showinfo("Успешно!", "База данных сохранена!")
+    showinfo("Успешно!", "База данных сохранена")
 
 
 def restore_database():
@@ -461,7 +461,7 @@ def restore_database():
     df.index = ([(x, y) for x, y in zip(df['Название'], df['Конфигурация памяти, ГБ'])])
     df.index = pd.MultiIndex.from_tuples(df.index)
     update_table()
-    showinfo("Успешно!", "База данных восстановлена!")
+    showinfo("Успешно!", "База данных восстановлена")
 
 
 try:
