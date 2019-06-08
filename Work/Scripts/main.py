@@ -370,7 +370,7 @@ def make_list(df):
     return col, s
 
 
-def update_table():
+def update_table(*args):
     """
     Функция для обновления таблицы
     Автор: Милосердов А.В.
