@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-LIBRARY_PATH = '/Library/'
+LIBRARY_PATH = '../Library/'
 MAIN_WINDOW_GEOMETRY = '1478x395'
 MAIN_WINDOW_TITLE = 'База данных видеокарт NVIDIA'
 MAIN_WINDOW_ICO = '../Graphics/icon.ico'
